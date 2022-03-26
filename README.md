@@ -72,7 +72,7 @@ python3 -m jbot
 
 ```
 
-![image-20220326151334623](/Users/curtin/Library/Application Support/typora-user-images/image-20220326151334623.png)
+![图1：首次登录授权个人tg](https://raw.githubusercontent.com/curtinlv/gd/main/img/p1.png)
 
 ​											                     (图1：首次登录授权个人tg)
 
@@ -94,7 +94,7 @@ tail -100f /ql/log/bot/run.log
 
 如tg机器人给你发以下信息，即完成启动机器人，证明你填写的机器人参数是正确的∆。
 
-![image-20220326150744616](/Users/curtin/Library/Application Support/typora-user-images/image-20220326150744616.png)
+![图2：完成登录，tg机器人发通知](https://raw.githubusercontent.com/curtinlv/gd/main/img/p2.png)
 
 ​																		(图2：完成登录，tg机器人发通知)
 
@@ -102,13 +102,13 @@ tail -100f /ql/log/bot/run.log
 
 测试1： 发送【user?】 给你的机器人，看看有没以下回复，证明你通过号码授权登录是正确的。
 
-![image-20220326154651137](/Users/curtin/Library/Application Support/typora-user-images/image-20220326154651137.png)
+![图3：测试1](https://raw.githubusercontent.com/curtinlv/gd/main/img/p3.png)
 
 ​																		(图3：测试1)
 
 测试2：在所监控的频道发出变量，机器人有没有通知：
 
-![image-20220326154000421](/Users/curtin/Library/Application Support/typora-user-images/image-20220326154000421.png)
+![图4：测试2](https://raw.githubusercontent.com/curtinlv/gd/main/img/p4.png)
 
 ​                                                                           (图4：测试2)
 
