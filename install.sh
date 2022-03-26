@@ -2,7 +2,7 @@
 set -e
 
 install_depend(){
-    echo -e "\n#1.开始安装所需依赖\n"
+    echo -e "\n1.开始安装所需依赖\n"
     # 包依赖
     apk add zlib zlib-dev libjpeg-turbo libjpeg-turbo-dev gcc python3-dev libffi-dev musl-dev linux-headers
     # 模块依赖
@@ -10,11 +10,11 @@ install_depend(){
 }
 
 gitPull(){
-    echo -e "\n#2.开始拉取所需代码\n"
+    echo -e "\n2.开始拉取所需代码\n"
     if [ ! -d /ql/jbot ]; then
         mkdir /ql/jbot
     fi
-    cd cd /ql/repo && git clone https://github.com/curtinlv/gd.git
+    cd /ql/repo && git clone https://github.com/curtinlv/gd.git
     cp -a /ql/repo/gd/* /ql/jbot && cp -a /ql/jbot/conf/* /ql/config && cp -a /ql/jbot/jk_script/* /ql/scripts
     if [ ! -d /ql/log/bot ]; then
         mkdir /ql/log/bot

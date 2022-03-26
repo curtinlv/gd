@@ -34,7 +34,7 @@ apk add zlib zlib-dev libjpeg-turbo libjpeg-turbo-dev gcc python3-dev libffi-dev
 pip3 install qrcode==7.3.1 Telethon==1.24.0 requests==2.27.1 Pillow==9.0.0 python-socks==1.2.4 async_timeout==4.0.2 prettytable==3.0.0
 
 # 拉取jbot主要代码
-cd cd /ql/repo && git clone https://github.com/curtinlv/gd.git
+cd /ql/repo && git clone https://github.com/curtinlv/gd.git
 cp -a /ql/repo/gd/* /ql/jbot && cp -a /ql/jbot/conf/* /ql/config 
 cp -a /ql/jbot/jk_script/* /ql/scripts
 mkdir /ql/log/bot
@@ -74,9 +74,7 @@ python3 -m jbot
 
 ![图1：首次登录授权个人tg](https://raw.githubusercontent.com/curtinlv/gd/main/img/p1.png)
 
-​											                     (图1：首次登录授权个人tg)
-
-### * 出现以上提示，即登录成功，按`ctrl+c `终止，继续以下操作：
+### ∆出现以上提示，即登录成功，按`ctrl+c `终止，继续以下操作：
 
 ```bash
 # 通过pm2 后台启动，除了登录验证外，建议使用pm2启动机器人
@@ -92,25 +90,17 @@ tail -100f /ql/log/bot/run.log
 
 ​																
 
-如tg机器人给你发以下信息，即完成启动机器人，证明你填写的机器人参数是正确的∆。
+- [x] 如tg机器人给你发以下信息，证明你填写的机器人参数是正确的∆。
 
 ![图2：完成登录，tg机器人发通知](https://raw.githubusercontent.com/curtinlv/gd/main/img/p2.png)
 
-​																		(图2：完成登录，tg机器人发通知)
-
-
-
-测试1： 发送【user?】 给你的机器人，看看有没以下回复，证明你通过号码授权登录是正确的。
+- [x] 发送【user?】 给你的机器人，有以下回复，证明你通过号码成功授权登录。
 
 ![图3：测试1](https://raw.githubusercontent.com/curtinlv/gd/main/img/p3.png)
 
-​																		(图3：测试1)
-
-测试2：在所监控的频道发出变量，机器人有没有通知：
+- [x] 在所监控的频道发出变量，机器人会马上通知：
 
 ![图4：测试2](https://raw.githubusercontent.com/curtinlv/gd/main/img/p4.png)
-
-​                                                                           (图4：测试2)
 
 
 
