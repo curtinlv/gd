@@ -23,31 +23,45 @@ async def bot_bean(event):
         else:
             text = None
         if V4 and text == 'in':
-            subprocess.check_output('jcsv', shell=True, stderr=subprocess.STDOUT)
+            subprocess.check_output(
+                'jcsv', shell=True, stderr=subprocess.STDOUT)
             creat_bean_counts(BEAN_IN_FILE)
-            await jdbot.edit_message(msg, '您的近日收入情况', file=BEAN_IMG)
+            await jdbot.delete_messages(chat_id, msg)
+            await jdbot.send_message(chat_id, '您的近日收入情况', file=BEAN_IMG)
         elif V4 and text == 'out':
-            subprocess.check_output('jcsv', shell=True, stderr=subprocess.STDOUT)
+            subprocess.check_output(
+                'jcsv', shell=True, stderr=subprocess.STDOUT)
             creat_bean_counts(BEAN_OUT_FILE)
-            await jdbot.edit_message(msg, '您的近日支出情况', file=BEAN_IMG)
+            await jdbot.delete_messages(chat_id, msg)
+            await jdbot.send_message(chat_id, '您的近日支出情况', file=BEAN_IMG)
         elif not V4 and (text == 'in' or text == 'out' or text is None):
             await jdbot.edit_message(msg, 'QL暂不支持使用bean in、out ,请使用/bean n n为数字')
-        elif not text:
-            subprocess.check_output('jcsv', shell=True, stderr=subprocess.STDOUT)
-            creat_bean_counts(BEAN_TOTAL_FILE)
-            await jdbot.edit_message(msg, '您的总京豆情况', file=BEAN_IMG)
-        elif text:
+        elif text and int(text):
             res = get_bean_data(int(text))
             if res['code'] != 200:
-                await jdbot.edit_message(msg, f'something wrong,I\'m sorry\n{str(res["data"])}')
+                await jdbot.delete_messages(chat_id, msg)
+                await jdbot.send_message(chat_id, f'something wrong,I\'m sorry\n{str(res["data"])}')
             else:
-                creat_bean_count(res['data'][3], res['data'][0], res['data'][1], res['data'][2][1:])
-                await jdbot.edit_message(msg, f'您的账号{text}收支情况', file=BEAN_IMG)
+                creat_bean_count(res['data'][3], res['data']
+                                 [0], res['data'][1], res['data'][2][1:])
+                await jdbot.delete_messages(chat_id, msg)
+                await jdbot.send_message(chat_id, f'您的账号{text}收支情况', file=BEAN_IMG)
+        elif not text:
+            subprocess.check_output(
+                'jcsv', shell=True, stderr=subprocess.STDOUT)
+            creat_bean_counts(BEAN_TOTAL_FILE)
+            await jdbot.delete_messages(chat_id, msg)
+            await jdbot.send_message(chat_id, '您的总京豆情况', file=BEAN_IMG)
         else:
-            await jdbot.edit_message(msg, '青龙暂仅支持/bean n n为账号数字')
+            await jdbot.delete_messages(chat_id, msg)
+            await jdbot.send_message(chat_id, '青龙暂仅支持/bean n n为账号数字')
     except Exception as e:
         await jdbot.send_message(chat_id, f'something wrong,I\'m sorry\n{str(e)}')
         logger.error(f'something wrong,I\'m sorry{str(e)}')
+
+if ch_name:
+    jdbot.add_event_handler(bot_bean, events.NewMessage(
+        chats=chat_id, pattern=BOT_SET['命令别名']['bean']))
 
 
 def creat_bean_count(date, beansin, beansout, beanstotal):
@@ -88,7 +102,3 @@ def creat_bean_counts(csv_file):
     font = ImageFont.truetype(FONT_FILE, 18)
     dr.text((10, 5), str(tb), font=font, fill="#000000")
     im.save(BEAN_IMG)
-    
-
-if ch_name:
-    jdbot.add_event_handler(bot_bean, events.NewMessage(chats=chat_id, pattern=BOT_SET['命令别名']['bean']))

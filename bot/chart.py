@@ -14,18 +14,24 @@ async def my_chart(event):
             text = msg_text[-1]
         else:
             text = None
-        if text:
+        if text and int(text):
             res = get_bean_data(int(text))
             if res['code'] != 200:
                 msg = await jdbot.edit_message(msg, f'something wrong,I\'m sorry\n{str(res["data"])}')
             else:
-                creat_chart(res['data'][3], f'账号{str(text)}', res['data'][0], res['data'][1], res['data'][2][1:])
-                msg = await jdbot.edit_message(msg, f'您的账号{text}收支情况', file=BEAN_IMG)
+                creat_chart(res['data'][3], f'账号{str(text)}',
+                            res['data'][0], res['data'][1], res['data'][2][1:])
+                await jdbot.delete_messages(chat_id, msg)
+                msg = await jdbot.send_message(chat_id, f'您的账号{text}收支情况', file=BEAN_IMG)
         else:
             msg = await jdbot.edit_message(msg, '请正确使用命令\n/chart n n为第n个账号')
     except Exception as e:
         await jdbot.edit_message(msg, f'something wrong,I\'m sorry\n{str(e)}')
         logger.error(f'something wrong,I\'m sorry\n{str(e)}')
+
+if ch_name:
+    jdbot.add_event_handler(my_chart, events.NewMessage(
+        chats=chat_id, pattern=BOT_SET['命令别名']['chart']))
 
 
 def creat_chart(xdata, title, bardata, bardata2, linedate):
@@ -133,7 +139,3 @@ def creat_chart(xdata, title, bardata, bardata2, linedate):
         }
     }
     qc.to_file(BEAN_IMG)
-
-
-if ch_name:
-    jdbot.add_event_handler(my_chart, events.NewMessage(chats=chat_id, pattern=BOT_SET['命令别名']['chart']))
