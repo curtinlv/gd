@@ -11,7 +11,7 @@ from telethon import events
 from .login import user
 from .. import chat_id, jdbot, logger, TOKEN
 from ..bot.utils import cmd, V4 
-from ..diy.utils import rwcon, myzdjr_chatIds
+from ..diy.utils import rwcon, myzdjr_chatIds, my_chat_id
 
 bot_id = int(TOKEN.split(":")[0])
 myzdjr_chatIds.append(bot_id)
@@ -75,7 +75,8 @@ async def activityID(event):
                 continue
             kv = message.replace("export ", "")
             key = kv.split("=")[0]
-            value = re.findall(r'"([^"]*)"', kv)[0]
+            # value = re.findall(r'"([^"]*)"', kv)[0]
+            value = re.findall(r'[\'|"]([^"]*)[\'|"]', kv)[0]
             configs = rwcon("str")
             if kv in configs:
                 continue
@@ -125,7 +126,7 @@ async def activityID(event):
             elif "jd_zdjr_activityId" in event.message.text:
                 await cmd('task /ql/scripts/jd_zdjr.js now')
             # 赚京豆助力，将获取到的团body发给自己测试频道
-            elif event.message.from_id.user_id == chat_id and "zjdbody" in event.message.text:
+            elif str(event.message.peer_id.channel_id) in str(my_chat_id) and "zjdbody" in event.message.text:
                 await cmd('task /ql/scripts/zxd.js now')
             elif "jd_redrain_url" in event.message.text:
                 msg = await jdbot.send_message(chat_id, r'`更换整点雨url完毕\n请定时任务0 0 * * * task jd_redrain now')
