@@ -129,6 +129,12 @@ pm2 stop jbot
 ## 重启机器人
 pm2 restart jbot
 
+## 更新监控脚本：
+1.把新增的脚本发给机器人，仅保存到 scripts 目录下
+2.更新user.py 监控，给机器人发送指令（直接复制整行，不能换行）
+/cmd  cd  /ql/jbot/user/ && rm -f user.py && wget https://raw.githubusercontent.com/curtinlv/gd/main/user/user.py
+3.重启生效，给机器人发送指令
+/reboot
 
 ```
 
