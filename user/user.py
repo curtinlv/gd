@@ -61,6 +61,8 @@ async def activityID(event):
             name = "lz组队瓜分"
         elif "M_WX_LUCK_DRAW_URL" in text:
             name = "转盘抽奖"
+        elif "WXGAME_ACT_ID" in text:
+            name = "打豆豆"
         else:
             return
         msg = await jdbot.send_message(chat_id, f'【监控】 监测到`{name}` 环境变量！')
@@ -114,6 +116,8 @@ async def activityID(event):
                 await cmd('task m_jd_wx_addCart.js now')
             elif "M_WX_LUCK_DRAW_URL" in event.message.text:
                 await cmd('task m_jd_wx_luckDraw.js now')
+            elif "WXGAME_ACT_ID" in event.message.text:
+                await cmd('task jd_dadoudou.js now')
             elif "jd_cjhy_activityId" in event.message.text:
                 await cmd('task /ql/scripts/jd_cjzdgf.js now')
             elif "jd_zdjr_activityId" in event.message.text:
