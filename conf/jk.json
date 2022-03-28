@@ -1,0 +1,92 @@
+{
+    "说明": "此配置支持自定义填写监控变量，频道id需要加在diybotset.json配置文件的myzdjr_chatId中，变量就填这里",
+
+    "/注释cmdName/": "cmdName: 执行命令，青龙默认task，一般不需要修改，修改需重启机器人生效。",
+  
+    "/注释isOpen/": "isOpen: 是否开启监控该变量，true=开启，false=关闭，修改需重启机器人生效",
+  
+    "/注释name/": "name: 脚本名称备注或自定义名字，不重要。修改需重启机器人生效",
+  
+    "/注释envName/": "envName: 监控的变量名称，必要。如同一个脚本有多个变量只需要填其中一个即可，修改需重启机器人生效",
+  
+    "/注释scriptPath/": "scriptPath: 变量应对的脚本路径，必要。相对路径默认执行/ql/scripts/下面脚本，可填绝对路径。修改需重启机器人生效",
+    
+   "cmdName": "task",
+
+   "jk":[
+       {
+           "isOpen": true,
+           "name": "电脑配件", 
+           "envName": "computer_activityId",
+           "scriptPath": "jd_computer.js"
+        },
+        {   
+            "isOpen": true,
+            "name": "jdjoy_open通用ID任务",
+            "envName": "comm_activityIDList",
+            "scriptPath": "/ql/scripts/jd_joyjd_open.js"
+         },
+        {
+            "isOpen": true,
+            "name": "盲盒任务抽京豆",
+            "envName": "jd_mhurlList",
+            "scriptPath": "jd_mhtask.js"
+         },
+        {
+            "isOpen": true,
+            "name": "女装盲盒抽京豆",
+            "envName": "jd_nzmhurl",
+            "scriptPath": "jd_nzmh.js"
+        },
+        {
+            "isOpen": true,
+            "name": "许愿池抽奖机",
+            "envName":"wish_appIdArrList",
+            "scriptPath":"jd_wish.js"
+        },
+        {
+            "isOpen": true,
+            "name": "加购任务",
+            "envName":"M_WX_ADD_CART_URL",
+            "scriptPath":"m_jd_wx_addCart.js"
+        },
+        {
+            "isOpen": true,
+            "name": "转盘抽奖",
+            "envName":"M_WX_LUCK_DRAW_URL",
+            "scriptPath":"m_jd_wx_luckDraw.js"
+        },
+        {
+            "isOpen": true,
+            "name": "打豆豆",
+            "envName":"WXGAME_ACT_ID",
+            "scriptPath":"jd_dadoudou.js"
+        },
+        {
+            "isOpen": true,
+            "name": "cj组队瓜分",
+            "envName":"jd_cjhy_activityId",
+            "scriptPath":"jd_cjzdgf.js"
+        },
+        {
+            "isOpen": true,
+            "name": "lz组队瓜分",
+            "envName":"jd_zdjr_activityId",
+            "scriptPath":"jd_zdjr.js"
+        },
+        {
+            "isOpen": true,
+            "name": "KR开卡脚本",
+            "envName":"VENDER_ID",
+            "scriptPath":"jd_OpenCard_Force.js"
+        },
+        {
+            "isOpen": true,
+            "name": "集卡任务",
+            "envName":"M_WX_COLLECT_CARD_URL",
+            "scriptPath":"m_jd_wx_collectCard.js"
+        }
+ 
+   ]
+    
+}
