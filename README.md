@@ -129,14 +129,42 @@ pm2 stop jbot
 ## 重启机器人
 pm2 restart jbot
 
-## 更新监控脚本：
-1.把新增的脚本发给机器人，仅保存到 scripts 目录下
-2.更新user.py 监控，给机器人发送指令（直接复制整行，不能换行）
-/cmd  cd  /ql/jbot/user/ && rm -f user.py && wget https://raw.githubusercontent.com/curtinlv/gd/main/user/user.py
-3.重启生效，给机器人发送指令
-/reboot
+```
+
+
+
+## 新增自定义监控配置文件 
+
+- 2022.3.28 详见 conf/jk.json
+
+```bash
+更新方式：
+1、以发送机器人命令方式：
+# 下载自定义监控配置文件 jk.json
+/cmd cd /ql/config && wget https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/conf/jk.json
+# 更新user.py
+/cmd cd /ql/jbot/user && rm -f user.py  && wget https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/user/user.py
+# 更新 utils.py
+/cmd cd /ql/jbot/diy && rm -f utils.py  && wget https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/diy/utils.py
+# 重启机器人生效
+/restart
+
+2.ssh进入容器方式：
+# 下载自定义监控配置文件 jk.json
+cd /ql/repo/gd && git pull  && cp -a /ql/repo/gd/conf/jk.json /ql/config
+# 更新user.py
+rm -f /ql/jbot/user/user.py && cp -a /ql/repo/gd/user/user.py /ql/jbot/user/user.py
+# 更新 utils.py
+rm -f /ql/jbot/diy/utils.py && cp -a /ql/repo/gd/diy/utils.py /ql/jbot/diy/utils.py
+# 重启机器人生效
+pm2 restart jbot
+
+
+
 
 ```
+
+
 
 
 
