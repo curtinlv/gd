@@ -138,7 +138,7 @@ pm2 restart jbot
 - 2022.3.28 详见 conf/jk.json
 
 ```bash
-更新方式：
+首次更新方式：
 1、以发送机器人命令方式：
 # 下载自定义监控配置文件 jk.json
 /cmd cd /ql/config && wget https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/conf/jk.json
@@ -160,6 +160,7 @@ rm -f /ql/jbot/diy/utils.py && cp -a /ql/repo/gd/diy/utils.py /ql/jbot/diy/utils
 pm2 restart jbot
 
 
+PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对执行脚本即可。修改完，需重启机器人生效。
 
 
 ```
