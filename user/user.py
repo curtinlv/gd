@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from asyncio import sleep
 import asyncio
 import os
 import re
@@ -12,10 +11,10 @@ from ..bot.utils import cmd, V4
 from ..diy.utils import rwcon, myzdjr_chatIds, my_chat_id, jk
 
 bot_id = int(TOKEN.split(":")[0])
-myzdjr_chatIds.append(bot_id)
+# myzdjr_chatIds.append(bot_id)
 client = user
 
-## 新增可通过配置文件自定义监控
+## 新增配置自定义监控
 jk_list = jk["jk"]
 cmdName = jk["cmdName"]
 nameList, envNameList, scriptPathList = [], [], []
@@ -36,7 +35,7 @@ for i in range(envNum):
 @client.on(events.NewMessage(chats=bot_id, from_users=chat_id, pattern=r"^user(\?|\？)$"))
 async def user(event):
     try:
-        msg = await jdbot.send_message(chat_id, r'`靓仔你好，监控已正常启动！`')
+        msg = await jdbot.send_message(chat_id, f'靓仔你好，监控已正常启动！\n\n配置变量: `{len(jk_list)}` | 当前监控: `{envNum}`')
         await asyncio.sleep(5)
         await jdbot.delete_messages(chat_id, msg)
     except Exception as e:
@@ -77,7 +76,6 @@ async def activityID(event):
                 continue
             kv = message.replace("export ", "")
             key = kv.split("=")[0]
-            # value = re.findall(r'"([^"]*)"', kv)[0]
             value = re.findall(r'[\'|"]([^"]*)[\'|"]', kv)[0]
             configs = rwcon("str")
             if kv in configs:
@@ -112,9 +110,10 @@ async def activityID(event):
                     await cmd(f'{cmdName} {scriptPath} now')
                     break
                 # 赚京豆助力，将获取到的团body发给自己测试频道，仅自己内部助力使用
-                elif str(event.message.peer_id.channel_id) in str(my_chat_id) and "zjdbody" in text:
+                elif "zjdbody" in text:
                     lable = True
-                    await cmd('task /ql/scripts/zxd.js now')
+                    if str(event.message.peer_id.channel_id) in str(my_chat_id):
+                        await cmd('task /ql/scripts/zxd.js now')
                     break
                 elif "jd_redrain_url" in text:
                     lable = True
@@ -139,4 +138,3 @@ async def activityID(event):
         tip = '建议百度/谷歌进行查询'
         await jdbot.send_message(chat_id, f"{title}\n\n{name}\n{function}\n错误原因：{str(e)}\n\n{tip}")
         logger.error(f"错误--->{str(e)}")
-
