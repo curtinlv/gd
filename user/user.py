@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import asyncio
+import random, time
 import os
 import re
 import sys
@@ -15,8 +16,14 @@ bot_id = int(TOKEN.split(":")[0])
 client = user
 
 ## 新增配置自定义监控
+jk_version = 'v1.1'
 jk_list = jk["jk"]
 cmdName = jk["cmdName"]
+try:
+    isNow = jk["cmdName"]
+except Exception as e:
+    isNow = True
+
 nameList, envNameList, scriptPathList = [], [], []
 for i in jk_list:
     if i["isOpen"]:
@@ -30,12 +37,40 @@ for i in range(envNum):
         patternStr += envNameList[i] + "|jd_redrain_url|jd_redrain_half_url|zjdbody"
     else:
         patternStr += envNameList[i] + "|"
+
+# 开启随机延时
+if isNow:
+    yanshi = ''
+else:
+    yanshi = 'now'
 ########
 
-@client.on(events.NewMessage(chats=bot_id, from_users=chat_id, pattern=r"^user(\?|\？)$"))
+# 开启队列
+async def funCX(name, scriptPath, lable=1):
+    try:
+        cxjc = f'ps -ef | grep -v grep | grep {scriptPath} | egrep "python|node"'
+        result = os.popen(cxjc)
+        r = result.readlines()
+        if r:
+            a = random.randint(60, 180) #队列检测休眠时间
+            msg = await jdbot.send_message(chat_id, f"【队列】`[{name}]`当前已在跑，本次等待`{a}`秒后再次尝试。")
+            await asyncio.sleep(5)
+            await jdbot.delete_messages(chat_id, msg)
+            await asyncio.sleep(a)
+            if lable < 11:
+                lable += 1
+                return await funCX(name, scriptPath, lable)
+        else:
+            msg = await jdbot.send_message(chat_id, f"【队列】`[{name}]`当前空闲，后台将随机延时执行。")
+            await asyncio.sleep(5)
+            await jdbot.delete_messages(chat_id, msg)
+    except Exception as e:
+        print(e)
+
+@client.on(events.NewMessage(chats=bot_id, from_users=chat_id, pattern=r"^(user|在吗)(\?|\？)$"))
 async def user(event):
     try:
-        msg = await jdbot.send_message(chat_id, f'靓仔你好，监控已正常启动！\n\n配置变量: `{len(jk_list)}` | 当前监控: `{envNum}`')
+        msg = await jdbot.send_message(chat_id, f'靓仔你好，gd监控`{jk_version}`已正常启动！\n\n配置变量: `{len(jk_list)}` | 当前监控: `{envNum}`')
         await asyncio.sleep(5)
         await jdbot.delete_messages(chat_id, msg)
     except Exception as e:
@@ -59,12 +94,15 @@ async def activityID(event):
                 break
             elif "zjdbody" in text:
                 name = "赚喜豆-每天90豆"
+                scriptPath = '/ql/scripts/zxd.js'
                 break
             elif "jd_redrain_url" in text:
                 name = "整点京豆雨"
+                scriptPath = 'xxxxxxxxx'
                 break
             elif "jd_redrain_half_url" in text:
                 name = "半点京豆雨"
+                scriptPath = 'xxxxxxxxx'
                 break
         if not name:
             return
@@ -81,6 +119,13 @@ async def activityID(event):
             if kv in configs:
                 continue
             if key in configs:
+                if isNow:
+                    await funCX(name, scriptPath)
+                if 'VENDER_ID' in key:
+                    # 防止同时触发开卡变量，自动加` ？
+                    a = random.randint(5, 15)
+                    # await asyncio.sleep(a)
+                    time.sleep(a)
                 configs = re.sub(f'{key}=("|\').*("|\')', kv, configs)
                 change += f"【替换】 `{name}` 环境变量成功\n`{kv}`\n\n"
                 msg = await jdbot.edit_message(msg, change)
@@ -107,7 +152,11 @@ async def activityID(event):
             for i in envNameList:
                 if i in text:
                     lable = True
-                    await cmd(f'{cmdName} {scriptPath} now')
+                    if isNow:
+                        # await funCX(name, scriptPath)
+                        await cmd(f'{cmdName} {scriptPath} {yanshi}')
+                    else:
+                        await cmd(f'{cmdName} {scriptPath} now')
                     break
                 # 赚京豆助力，将获取到的团body发给自己测试频道，仅自己内部助力使用
                 elif "zjdbody" in text:

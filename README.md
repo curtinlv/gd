@@ -133,9 +133,10 @@ pm2 restart jbot
 
 
 
-## 新增自定义监控配置文件 
+## 更新 
 
-- 2022.3.28 详见 conf/jk.json
+- 2022.3.28 
+  - 新增自定义监控配置文件，详见 conf/jk.json
 
 ```bash
 首次更新方式：
@@ -165,7 +166,42 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
 
 ```
 
+* 2022.4.3 
 
+  - 增加队列
+
+  - 修复开卡变量配置问题
+  - 增加机器人指令 /upgd  #更新监控程序
+
+  ```bash
+  PS:第一次的部署的按照上面教程即可，以下命令仅适合部署过的。
+  #【更新方法1】进入容器：
+  docker exec -it qinglong /bin/bash
+  #停止机器人
+  pm2 stop jbot
+  #更新代码
+  rm -rf /ql/repo/gd
+  cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git
+  rm -rf /ql/jbot/*
+  cp -a /ql/repo/gd/* /ql/jbot/
+  #启动机器人
+  pm2 start jbot
+  
+  #【更新方法2】发给机器人指令, 这是一行命令，整行复制，不能换行！
+  /cmd rm -rf /ql/repo/gd && cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git && pm2 stop jbot &&  rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ && pm2 start jbot
+  
+  #适配青龙，以防重启后失效
+  rm -rf /ql/repo/dockerbot
+  mkdir /ql/repo/dockerbot
+  ln -sf /ql/repo/gd /ql/repo/dockerbot/jbot
+  echo 'apk add zlib zlib-dev libjpeg-turbo libjpeg-turbo-dev gcc python3-dev libffi-dev musl-dev linux-headers' >>/ql/config/extra.sh
+  echo 'pip3 install qrcode==7.3.1 Telethon==1.24.0 requests==2.27.1 Pillow==9.0.0 python-socks==1.2.4 async_timeout==4.0.2 prettytable==3.0.0' >>/ql/config/extra.sh
+  echo 'cd /ql/jbot  && pm2 start ecosystem.config.js' >>/ql/config/extra.sh
+  echo 'cd /ql/ && pm2 start jbot' >>/ql/config/extra.sh
+  
+  ```
+
+  
 
 
 

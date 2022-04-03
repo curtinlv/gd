@@ -33,6 +33,8 @@ async def bot_start(event):
     /snode 选择脚本执行，只能选择/scripts和/own目录下的脚本，选择完后直接后台运行。
     /repo 管理添加的仓库。
     /export 管理添加的环境变量。
+    cx 查询当前运行的进程。
+    /upgd 更新gd监控代码。
     
     此外，直接发送文件至BOT，会让您选择保存到目标文件夹，支持保存并运行。发送以 .git 结尾的链接开始添加仓库。发送以 .js .sh .py结尾的已raw链接开始下载文件。发送格式为 key="value" 或者 key='value' 的消息开始添加环境变量。'''
     else:
@@ -63,6 +65,8 @@ async def bot_start(event):
     /repo 管理添加的仓库。
     /addenv 青龙新增环境变量。
     /env 青龙管理环境变量。
+    cx 查询当前运行的进程。
+    /upgd 更新gd监控代码。
     
     此外，直接发送文件至BOT，会让您选择保存到目标文件夹，支持保存并运行。发送以 .git 结尾的链接开始添加仓库。发送以 .js .sh .py结尾的已raw链接开始下载文件。发送格式为 key="value" 或者 key='value' 的消息开始添加环境变量。'''
     await jdbot.send_message(chat_id, msg)
