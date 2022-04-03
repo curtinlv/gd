@@ -48,6 +48,7 @@ async def upgdjk(event):
                     else:
                         msg = await jdbot.edit_message(msg, f"当前版本:`{jk_version}`, 最新版本:{newversion}")
                 else:
+                    msg = await jdbot.edit_message(msg, f"获取新版本失败~")
                     conv.cancel()
                     return
             conv.cancel()
