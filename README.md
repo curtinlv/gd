@@ -199,6 +199,9 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
   echo 'cd /ql/jbot  && pm2 start ecosystem.config.js' >>/ql/config/extra.sh
   echo 'cd /ql/ && pm2 start jbot' >>/ql/config/extra.sh
   
+  #2.12新版路径临时解决方法
+  ln -sf /ql/data/scripts /ql/
+  
   ```
 
   

@@ -36,7 +36,9 @@ setshort-设置自定义按钮
 snode-选择脚本后台运行
 start-开始使用本程序
 upbot-升级机器人
-ver-版本'''
+ver-版本
+cx-查询当前运行的进程
+upgd-更新gd监控代码'''
         bean = '/bean 加数字，获取该账户近期收支情况\n/bean in\\out获取所有账户近期收或支情况\n/bean 获取账户总豆数量'
         cmd = '/cmd用于执行shell命令，如果命令持续10分钟仍未结束，将强行终止，以保障机器人响应'
         edit = '/edit 进入/jd目录选择文件进行编辑，仅限简易编辑\n/edit /jd/config进入config目录选择文件编辑\n/edit /jd/config/config.sh 直接编辑config.sh文件'
@@ -68,7 +70,9 @@ setshort-设置自定义按钮
 snode-选择脚本后台运行
 start-开始使用本程序
 upbot-升级机器人
-ver-版本'''
+ver-版本
+cx-查询当前运行的进程
+upgd-更新gd监控代码'''
         bean = '/bean 加数字，获取该账户近期收支情况'
         cmd = '/cmd用于执行shell命令，如果命令持续10分钟仍未结束，将强行终止，以保障机器人响应'
         edit = '/edit 进入/ql目录选择文件进行编辑，仅限简易编辑\n/edit /ql/config进入config目录选择文件编辑\n/edit /ql/config/config.sh 直接编辑config.sh文件'
