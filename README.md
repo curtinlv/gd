@@ -52,7 +52,7 @@ mkdir /ql/log/bot
 vi /ql/config/bot.json
 
 # 监控频道相关参数，存放路径：
-## 填写参考：https://raw.githubusercontent.com/curtinlv/gd/main/conf/botset.json
+## 填写参考：https://raw.githubusercontent.com/curtinlv/gd/main/conf/diybotset.json
 vi /ql/config/diybotset.json
 
 ```
