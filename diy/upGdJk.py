@@ -56,16 +56,13 @@ async def upgdjk(event):
             msg = await jdbot.send_message(chat_id, "抱歉！暂不支持v4在线更新监控！")
             await jdbot.delete_messages(chat_id, msg)
         else:
-            os.popen('pm2 stop jbot')
-            os.popen("ps -ef | grep jbot | grep -v grep | awk '{print $1}' |xargs kill -9")
             os.popen('rm -rf /ql/repo/gd')
             os.popen('cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git')
-            os.popen('rm -rf /ql/jbot/*')
-            os.popen('cp -a /ql/repo/gd/* /ql/jbot/')
-            os.popen('pm2 start jbot')
             os.popen('rm -rf /ql/repo/dockerbot')
             os.popen('mkdir /ql/repo/dockerbot')
             os.popen('ln -sf /ql/repo/gd /ql/repo/dockerbot/jbot')
+            os.popen('pm2 stop jbot && rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ && pm2 start jbot')
+            # os.popen("ps -ef | grep jbot | grep -v grep | awk '{print $1}' |xargs kill -9")
 
         
     except Exception as e:

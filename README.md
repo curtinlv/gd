@@ -188,7 +188,7 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
   pm2 start jbot
   
   #【更新方法2】发给机器人指令, 这是一行命令，整行复制，不能换行！
-  /cmd rm -rf /ql/repo/gd && cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git && pm2 stop jbot &&  rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ && pm2 start jbot
+  /cmd rm -rf /ql/repo/gd && cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git && pm2 stop jbot ; rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ ; pm2 start jbot
   
   #适配青龙，以防重启后失效
   rm -rf /ql/repo/dockerbot
