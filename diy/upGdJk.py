@@ -70,7 +70,11 @@ async def upgdjk(event):
         name = "文件名：" + os.path.split(__file__)[-1].split(".")[0]
         function = "函数名：" + sys._getframe().f_code.co_name
         tip = '建议百度/谷歌进行查询'
-        await jdbot.send_message(chat_id, f"{title}\n\n{name}\n{function}\n错误原因：{str(e)}\n\n{tip}")
+        if e:
+            await jdbot.send_message(chat_id, f"{title}\n\n{name}\n{function}\n错误原因：{str(e)}\n\n{tip}")
+        else:
+            msg = await jdbot.edit_message(chat_id, f"已超时")
+            await jdbot.delete_messages(chat_id, msg)
         logger.error(f"错误--->{str(e)}")
 
 
