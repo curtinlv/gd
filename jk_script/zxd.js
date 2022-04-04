@@ -1,22 +1,29 @@
 /*
 更新时间：2022-4-3
-活动入口：微信小程序赚京豆-瓜分京豆
 每天90京豆，有效期很短，配合兑换青豆脚本自动兑换喜豆。
+使用说明：每抓一个body设置一个变量，再执行此脚本助力。仅自己内部ck助力变量body的团。
+
 
 # 变量
 export zjdbody=""
 
-使用说明：每抓一个body设置一个变量，再执行此脚本助力。仅自己内部ck助力变量body的团。
 抓body方法：
-1、添加重写。
-2、自己开团，分享邀请（每开一个团都要分享）给自己打开，弹窗点击助力。抓取成功qx会通知弹窗，点击弹窗复制body设置变量即可。
-3、如果自己点击自己没触发助力，建议从赚京豆小程序进入-瓜分京豆-再分享一次后再点击进入。
+入口：微信小程序-赚京豆-瓜分京豆
+
+1.开团后立马发分享邀请发给你自己（重写一直开着的话，建议10秒内发邀请）
+
+2.开启重写，自己点击自己的邀请助力就会抓body（重写会触发自己给自己点击，如果没触发，让别的号去点击。）
+
+3.复制body设置变量，运行脚本，仅内部ck助力。
+
+
+
 
 [MITM]
 api.m.jd.com
 
 [rewrite_local]
-#触发自己点自己助力方便抓body，如过触发不了刷新小程序重新进入或分享给别的号点击。点击助力后即可获取body，无论是否成功助力都可。
+#触发自己点自己助力方便抓body，如过触发不了刷新小程序重新进入或分享给别的号点击。点击助力后即可获取，无论是否成功助力都可。
 ^https?://api\.m\.jd\.com/api\?functionId=vvipclub_distributeBean_assist url script-request-body https://gitee.com/curtinlv/Curtin/raw/master/Script/c_zjd_help.js
 ^https?://api\.m\.jd\.com/api\?functionId=distributeBeanActivityInfo url script-response-body https://gitee.com/curtinlv/Curtin/raw/master/Script/c_zjd_help.js
 
@@ -93,9 +100,13 @@ function GetBody() {
         var body = $response.body;
         let obj = JSON.parse(body);
             if(obj.data.assistStatus === 1){
-                encPin = obj.data.encPin;
-                console.log(`触发自己助力自己`);
-                obj['data']['encPin']= randomString(27) + '_Z5gj\n'
+                if(obj.data.assistValidMilliseconds < 3590000 ){
+                    encPin = obj.data.encPin;
+                    console.log(`触发自己助力自己`);
+                    obj['data']['encPin']= randomString(27) + '_Z5gj\n'
+
+                }
+
                 // obj['data']['assistStatus']= 3
             }
             body = JSON.stringify(obj);
