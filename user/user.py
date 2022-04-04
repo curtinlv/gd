@@ -63,7 +63,7 @@ readDL(True)
 # 开启队列
 async def funCX(name, scriptPath, msg, lable=1):
     try:
-        cxjc = f'ps -ef | grep -v grep | grep {scriptPath} | egrep "python|node"'
+        cxjc = f'ps -ef | egrep -v "timeout|grep" | grep {scriptPath} | egrep "python|node"'
         result = os.popen(cxjc)
         r = result.readlines()
         if r:
@@ -87,7 +87,7 @@ async def funCX(name, scriptPath, msg, lable=1):
 async def funCXDL():
     dl = readDL(False)
     for n, i in zip(nameList, scriptPathList):
-        cxjc = f'ps -ef | grep -v grep | grep {i} | egrep "python|node"'
+        cxjc = f'ps -ef | egrep -v "timeout|grep" | grep {i} | egrep "python|node"'
         result = os.popen(cxjc)
         r = result.readlines()
         jcDict[n] = len(r)
