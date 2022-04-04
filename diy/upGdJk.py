@@ -15,7 +15,7 @@ from ..user.user import jk_version
 async def getNewVer():
     url = 'https://raw.githubusercontent.com/curtinlv/gd/main/user/user.py'
     if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false' and 'github' in url:
-        url = f'{str(BOT_SET["下载代理"])}/{url}'
+        url = f'https://git.metauniverse-cn.com/{url}'
     newversion = None
     r = requests.get(url)
     if r.status_code == 200:
@@ -60,7 +60,7 @@ async def upgdjk(event):
         else:
             os.popen('rm -rf /ql/repo/gd')
             if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false':
-                os.popen(f'cd /ql/repo/ && git clone {str(BOT_SET["下载代理"])}/https://github.com/curtinlv/gd.git')
+                os.popen(f'cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git')
             else:
                 os.popen(f'cd /ql/repo/ && git clone https://github.com/curtinlv/gd.git')
             os.popen('rm -rf /ql/repo/dockerbot')
