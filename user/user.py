@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import asyncio
-import random, time
+import random
 import os
 import re
 import sys
@@ -11,13 +11,13 @@ from .login import user
 from .. import chat_id, jdbot, logger, TOKEN
 from ..bot.utils import cmd, V4
 from ..diy.utils import rwcon, myzdjr_chatIds, my_chat_id, jk
+jk_version = 'v1.2.1'
+from ..bot.update import version as jk_version
 
 bot_id = int(TOKEN.split(":")[0])
 # myzdjr_chatIds.append(bot_id)
 client = user
-
 ## 新增配置自定义监控
-jk_version = 'v1.2'
 jk_list = jk["jk"]
 cmdName = jk["cmdName"]
 jcDict = {}
@@ -186,11 +186,11 @@ async def activityID(event):
                     configs = rwcon("str")
                     if kv in configs:
                         continue
-                if 'VENDER_ID' in key:
-                    # 防止同时触发开卡变量，自动加` ？
-                    a = random.randint(5, 15)
-                    # await asyncio.sleep(a)
-                    time.sleep(a)
+                # if 'VENDER_ID' in key:
+                    # 防止同时触发开卡变量，自动加*` ？
+                a = random.randint(3, 15)
+                    # time.sleep(a)
+                await asyncio.sleep(a)
                 configs = re.sub(f'{key}=("|\').*("|\')', kv, configs)
                 change += f"【替换】 `{name}` 环境变量成功\n`{kv}`\n\n"
                 msg = await jdbot.edit_message(msg, change)
@@ -221,11 +221,12 @@ async def activityID(event):
                     if dl[name] > 0:
                         dl[name] -= 1
                         readDL(True, dl)
-                    if isNow:
-                        # await funCX(name, scriptPath)
-                        await cmd(f'{cmdName} {scriptPath} {yanshi}')
-                    else:
-                        await cmd(f'{cmdName} {scriptPath} now')
+                    await cmd(f'{cmdName} {scriptPath} now')
+                    # if isNow:
+                    #     # await funCX(name, scriptPath)
+                    #     await cmd(f'{cmdName} {scriptPath} {yanshi}')
+                    # else:
+                    #     await cmd(f'{cmdName} {scriptPath} now')
                     break
                 # 赚京豆助力，将获取到的团body发给自己测试频道，仅自己内部助力使用
                 elif "zjdbody" in text:

@@ -11,7 +11,8 @@ from .. import chat_id, jdbot, logger, JD_DIR, BOT_SET
 
 @jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^/upbot$'))
 async def myupbot(event):
-    msg = await jdbot.send_message(chat_id, "【正式版本】\n\n准备更新程序")
+    msg = await jdbot.send_message(chat_id, "/upbot 监控机器人暂不支持原bot更新，会冲突。请使用 `/upgd` 更新")
+    return
     try:
         url = "https://raw.githubusercontent.com/chiupam/JD_Diy/master/shell/bot.sh"
         if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false' and 'github' in url:

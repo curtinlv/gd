@@ -9,7 +9,7 @@ import re
 from telethon import events, Button
 from ..bot.utils import press_event, V4
 from .. import chat_id, jdbot, logger, ch_name, BOT_SET
-from ..user.user import jk_version
+from ..bot.update import version as jk_version
 
 
 async def getNewVer():
@@ -19,7 +19,7 @@ async def getNewVer():
     newversion = None
     r = requests.get(url)
     if r.status_code == 200:
-        newver = re.findall(r'^jk_version.*\'(.*?)\'$', r.text, re.M)
+        newver = re.findall(r'^version.*\'(.*?)\'$', r.text, re.M)
         if len(newver) > 0:
             newversion = newver[0]
     return newversion
