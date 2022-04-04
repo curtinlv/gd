@@ -1,30 +1,36 @@
 /*
-更新时间：2022-03-21
+更新时间：2022-4-3
 活动入口：微信小程序赚京豆-瓜分京豆
+每天90京豆，有效期很短，配合兑换青豆脚本自动兑换喜豆。
 
-重写抓取body，一个团一个body助力。
+# 变量
+export zjdbody=""
+
+使用说明：每抓一个body设置一个变量，再执行此脚本助力。仅自己内部ck助力变量body的团。
+抓body方法：
+1、添加重写。
+2、自己开团，分享邀请（每开一个团都要分享）给自己打开，弹窗点击助力。抓取成功qx会通知弹窗，点击弹窗复制body设置变量即可。
+3、如果自己点击自己没触发助力，建议从赚京豆小程序进入-瓜分京豆-再分享一次后再点击进入。
 
 [MITM]
 api.m.jd.com
 
 [rewrite_local]
-#点击助力后即可获取，无论是否成功助力都可。
+#触发自己点自己助力方便抓body，如过触发不了刷新小程序重新进入或分享给别的号点击。点击助力后即可获取body，无论是否成功助力都可。
 ^https?://api\.m\.jd\.com/api\?functionId=vvipclub_distributeBean_assist url script-request-body https://gitee.com/curtinlv/Curtin/raw/master/Script/c_zjd_help.js
+^https?://api\.m\.jd\.com/api\?functionId=distributeBeanActivityInfo url script-response-body https://gitee.com/curtinlv/Curtin/raw/master/Script/c_zjd_help.js
 
 [task_local]
 #获取body后执行
 10 10 * * * https://gitee.com/curtinlv/Curtin/raw/master/Script/c_zjd_help.js, tag=微信小程序赚京豆-瓜分京豆, enabled=true
 
 
-# 变量
-export zjdbody=""
 
 */
 const $ = new Env('赚喜豆-内部助力');
 let cookiesArr = [], cookie = '',  notify,  allMessage = '' ;
 const logs = 0; // 0为关闭日志，1为开启
 $.message = '';
-
 
 let isGetbody = typeof $request !== 'undefined';
 
@@ -69,8 +75,8 @@ if (isGetbody) {
 
   }
 
-  if ($.isNode() && allMessage && $.ctrTemp) {
-    await notify.sendNotify(`${$.name}`, `${allMessage}`)
+  if ($.isNode()) {
+      await notify.sendNotify($.name, $.message);
   }
 })()
     .catch((e) => {
@@ -82,6 +88,20 @@ if (isGetbody) {
 
 
 function GetBody() {
+
+    if ($request && $request.url.indexOf("functionId=distributeBeanActivityInfo") >= 0) {
+        var body = $response.body;
+        let obj = JSON.parse(body);
+            if(obj.data.assistStatus === 1){
+                encPin = obj.data.encPin;
+                console.log(`触发自己助力自己`);
+                obj['data']['encPin']= randomString(27) + '_Z5gj\n'
+                // obj['data']['assistStatus']= 3
+            }
+            body = JSON.stringify(obj);
+
+       $done({body});
+    }
     if ($request && $request.url.indexOf("functionId=vvipclub_distributeBean_assist") >= 0) {
 
 
@@ -92,7 +112,7 @@ function GetBody() {
             $.log(
                 `[${$.name}] 助力Body✅: 成功, export zjdbody='${zjdBodyVal}'`
             );
-            $.msg($.name, `获取赚京豆助力Body: 成功🎉`, `#设置变量\nexport zjdbody='${zjdBodyVal}'`);
+            $.msg($.name, `获取赚京豆助力Body: 成功🎉`, `export zjdbody='${zjdBodyVal}'\n#设置变量`);
         };
         $done();
     }
@@ -127,28 +147,39 @@ async function vvipclub_distributeBean_assist(timeout = 500) {
                           label = 4;
                           console.log(`该团已完成助力🎉`);
                           $.message += `该团已完成助力🎉\n`;
-                          await notify.sendNotify($.name, $.message);
+                          // await notify.sendNotify($.name, $.message);
                         }
                      } else {
 
                       if ($.data.resultCode === "9200011"){
                         console.log(`您已经助力过`);
+                        return
                       }
                       if ($.data.resultCode === "2400205"){
                         console.log(`该团已完成`);
-                        label = 4;
+                        $.message += `该团已完成，不需要助力了。\n`;
+                        // await notify.sendNotify($.name, $.message);
+                        label = 5;
+                        return
                       }
                       if ($.data.resultCode === "2400203"){
                         console.log(`你的助力次数已达上限`);
+                        return
                       }
                       if ($.data.resultCode === "9000013"){
                         console.log(`body参数不正确`);
                         label = 4;
+                        return
                       }
                       if ($.data.resultCode === "90000014"){
+                          $.message += `任务超时或已完成\n`;
+                        // await notify.sendNotify($.name, $.message);
                         console.log(`任务超时或已完成`);
                         label = 4;
+                        return
                       }
+                      console.log(`${data}`);
+
                     }
 
                 } catch (e) {
@@ -249,6 +280,17 @@ function jsonParse(str) {
     }
   }
 }
+
+function randomString(len) {
+　　len = len || 32;
+ 　　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+  　　var maxPos = $chars.length;
+  　　var pwd = '';
+  　　for (i = 0; i < len; i++) {
+  　　　　pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+  　　}
+ 　　return pwd;
+ };
 
 
 // prettier-ignore
