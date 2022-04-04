@@ -13,7 +13,7 @@ from ..bot.update import version as jk_version
 
 
 async def getNewVer():
-    url = 'https://raw.githubusercontent.com/curtinlv/gd/main/user/user.py'
+    url = 'https://raw.githubusercontent.com/curtinlv/gd/main/bot/update.py'
     if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false' and 'github' in url:
         url = f'https://git.metauniverse-cn.com/{url}'
     newversion = None

@@ -222,6 +222,22 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
   
   ```
 
+* 2022.4.4(v1.2.1)
+
+  * 新增一键更新脚本
+
+  ```bash
+  #本地执行
+  bash update.py
+  # 一键更新
+  cd /ql && wget https://raw.githubusercontent.com/curtinlv/gd/main/update.sh && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &
+  
+  #查看更新日志
+  tail -100f /ql/log/bot/up.log
+  #取消查看日志
+  Ctrl+C
+  ```
+
   
 
 # 特别感谢
