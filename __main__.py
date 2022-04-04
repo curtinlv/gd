@@ -21,7 +21,7 @@ load_module('diy', BOT_D_DIR)
 
 
 async def new_ver():
-    info = '[项目地址](https://github.com/chiupam/JD_Diy.git) \t| \t[交流频道](https://t.me/JD_Diy_Channel) '
+    info = '[项目地址](https://github.com/chiupam/JD_Diy.git) \t| \t[交流频道](https://t.me/JD_Diy_Channel) \n\t[监控源码](https://github.com/curtinlv/gd.git) \t| \t[交流频道](https://t.me/topstyle996) '
     if os.path.exists(BOT_UP_LOG):
         is_new = False
         with open(BOT_UP_LOG, 'r', encoding='utf-8') as f:
@@ -70,7 +70,7 @@ async def bot_set_init():
 
 async def hello():
     if BOT_SET.get('启动问候') and BOT_SET['启动问候'].lower() == 'true':
-        info = '[项目地址](https://github.com/chiupam/JD_Diy.git) \t| \t[交流频道](https://t.me/JD_Diy_Channel) '
+        info = '[项目地址](https://github.com/chiupam/JD_Diy.git) \t| \t[交流频道](https://t.me/JD_Diy_Channel) \n\t[监控源码](https://github.com/curtinlv/gd.git) \t| \t[交流频道](https://t.me/topstyle996) '
         hello_words = BOT_SET["启动问候语"].split("|")
         hello_word = hello_words[random.randint(0, len(hello_words) - 1)]
         await jdbot.send_message(chat_id, f'{str(hello_word)}\n\n\t{info}', link_preview=False)

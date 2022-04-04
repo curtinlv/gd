@@ -166,7 +166,7 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
 
 ```
 
-* 2022.4.3 
+* 2022.4.3  (v1.1)
 
   - 增加队列
 
@@ -204,9 +204,25 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
   
   ```
 
+
+* 2022.4.4 (v1.2)
+
+  * 增加监控明细查询
+  * 修复 /upgd （指令更新监控程序，后续本仓库更新，可直接通过此指令一键更新。）
+
+  ```bash
+  PS:第一次的部署的按照上面教程即可，以下命令仅适合部署过的。
+  #【更新方法1】进入容器：
+  docker exec -it qinglong /bin/bash
+  # 直接复制执行，这是一条命令，不能换行。
+  rm -rf /ql/repo/gd && cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git && pm2 stop jbot ; rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ ; pm2 start jbot
   
+  #【更新方法2】发给机器人指令, 这是一行命令，整行复制，不能换行！
+  /cmd rm -rf /ql/repo/gd && cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git && pm2 stop jbot ; rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ ; pm2 start jbot
+  
+  ```
 
-
+  
 
 # 特别感谢
 - 脚本的写作参考了:

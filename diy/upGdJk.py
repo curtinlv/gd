@@ -13,7 +13,9 @@ from ..user.user import jk_version
 
 
 async def getNewVer():
-    url = 'https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/user/user.py'
+    url = 'https://raw.githubusercontent.com/curtinlv/gd/main/user/user.py'
+    if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false' and 'github' in url:
+        url = f'{str(BOT_SET["下载代理"])}/{url}'
     newversion = None
     r = requests.get(url)
     if r.status_code == 200:
@@ -57,7 +59,10 @@ async def upgdjk(event):
             await jdbot.delete_messages(chat_id, msg)
         else:
             os.popen('rm -rf /ql/repo/gd')
-            os.popen('cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git')
+            if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false':
+                os.popen(f'cd /ql/repo/ && git clone {str(BOT_SET["下载代理"])}/https://github.com/curtinlv/gd.git')
+            else:
+                os.popen(f'cd /ql/repo/ && git clone https://github.com/curtinlv/gd.git')
             os.popen('rm -rf /ql/repo/dockerbot')
             os.popen('mkdir /ql/repo/dockerbot')
             os.popen('ln -sf /ql/repo/gd /ql/repo/dockerbot/jbot')
@@ -70,10 +75,10 @@ async def upgdjk(event):
         name = "文件名：" + os.path.split(__file__)[-1].split(".")[0]
         function = "函数名：" + sys._getframe().f_code.co_name
         tip = '建议百度/谷歌进行查询'
-        if e:
+        if len(e) > 0:
             await jdbot.send_message(chat_id, f"{title}\n\n{name}\n{function}\n错误原因：{str(e)}\n\n{tip}")
         else:
-            msg = await jdbot.edit_message(chat_id, f"已超时")
+            msg = await jdbot.edit_message(msg, f"已超时")
             await jdbot.delete_messages(chat_id, msg)
         logger.error(f"错误--->{str(e)}")
 

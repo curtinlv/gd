@@ -5,6 +5,7 @@ import random, time
 import os
 import re
 import sys
+import json
 from telethon import events
 from .login import user
 from .. import chat_id, jdbot, logger, TOKEN
@@ -16,11 +17,13 @@ bot_id = int(TOKEN.split(":")[0])
 client = user
 
 ## 新增配置自定义监控
-jk_version = 'v1.1'
+jk_version = 'v1.2'
 jk_list = jk["jk"]
 cmdName = jk["cmdName"]
+jcDict = {}
+dlDict = {}
 try:
-    isNow = jk["cmdName"]
+    isNow = jk["isNow"]
 except Exception as e:
     isNow = True
 
@@ -30,6 +33,7 @@ for i in jk_list:
         nameList.append(i["name"])
         envNameList.append(i["envName"])
         scriptPathList.append(i["scriptPath"])
+        dlDict[i["name"]] = 0
 patternStr = ''
 envNum = len(envNameList)
 for i in range(envNum):
@@ -43,35 +47,92 @@ if isNow:
     yanshi = ''
 else:
     yanshi = 'now'
-########
 
+def readDL(lable, dl=dlDict):
+    if lable:
+        with open('duilie.json', "w+", encoding="utf-8") as f:
+            json.dump(dl, f, ensure_ascii=False)
+    else:
+        with open('duilie.json', "r", encoding="utf-8") as f:
+            dl = json.load(f)
+    return dl
+
+
+readDL(True)
+########
 # 开启队列
-async def funCX(name, scriptPath, lable=1):
+async def funCX(name, scriptPath, msg, lable=1):
     try:
         cxjc = f'ps -ef | grep -v grep | grep {scriptPath} | egrep "python|node"'
         result = os.popen(cxjc)
         r = result.readlines()
         if r:
             a = random.randint(60, 180) #队列检测休眠时间
-            msg = await jdbot.send_message(chat_id, f"【队列】`[{name}]`当前已在跑，本次等待`{a}`秒后再次尝试。")
-            await asyncio.sleep(5)
-            await jdbot.delete_messages(chat_id, msg)
-            await asyncio.sleep(a)
-            if lable < 11:
+            msg = await jdbot.edit_message(msg, f"【队列】`[{name}]`当前已在跑，已加入队列等待。本次等待`{a}`秒后再次尝试。可发送【`监控明细`】查询队列情况。")
+            if lable < 21:
+                if lable == 1:
+                    dl = readDL(False)
+                    dl[name] += 1
+                    readDL(True, dl)
                 lable += 1
-                return await funCX(name, scriptPath, lable)
+                await asyncio.sleep(a)
+                return await funCX(name, scriptPath, msg, lable)
         else:
-            msg = await jdbot.send_message(chat_id, f"【队列】`[{name}]`当前空闲，后台将随机延时执行。")
-            await asyncio.sleep(5)
-            await jdbot.delete_messages(chat_id, msg)
+            msg = await jdbot.edit_message(msg, f"【队列】`[{name}]`当前空闲，后台将随机延时执行。")
     except Exception as e:
         print(e)
+    return msg
+
+# 查询当前已运行
+async def funCXDL():
+    dl = readDL(False)
+    for n, i in zip(nameList, scriptPathList):
+        cxjc = f'ps -ef | grep -v grep | grep {i} | egrep "python|node"'
+        result = os.popen(cxjc)
+        r = result.readlines()
+        jcDict[n] = len(r)
+    dlmsg = ''
+    for i in jcDict:
+        if jcDict[i] > 0:
+            jcNum = f'`{jcDict[i]}`'
+        else:
+            jcNum = jcDict[i]
+        if dl[i] > 0:
+            dlNum = f'`{dl[i]}`'
+        else:
+            dlNum = dl[i]
+        dlmsg += f"当前:{jcNum} | 队列:{dlNum}\t【{i}】\n"
+    if isNow:
+        dlmsg += f"\n是否队列等待:`已开启`\n"
+    else:
+        dlmsg += f"\n是否队列等待:`未开启`（如需开启，请配置jk.json的参数isNow=true）\n"
+    return dlmsg
+
 
 @client.on(events.NewMessage(chats=bot_id, from_users=chat_id, pattern=r"^(user|在吗)(\?|\？)$"))
 async def user(event):
     try:
         msg = await jdbot.send_message(chat_id, f'靓仔你好，gd监控`{jk_version}`已正常启动！\n\n配置变量: `{len(jk_list)}` | 当前监控: `{envNum}`')
-        await asyncio.sleep(5)
+        dlmsg = await funCXDL()
+        await asyncio.sleep(3)
+        msg = await jdbot.edit_message(msg, f'\n================\n\t\t\t\t\t\t\t监控明细\n================\n{dlmsg}')
+        await asyncio.sleep(30)
+        await jdbot.delete_messages(chat_id, msg)
+    except Exception as e:
+        title = "【💥错误💥】"
+        name = "文件名：" + os.path.split(__file__)[-1].split(".")[0]
+        function = "函数名：" + sys._getframe().f_code.co_name
+        tip = '建议百度/谷歌进行查询'
+        await jdbot.send_message(chat_id, f"{title}\n\n{name}\n{function}\n错误原因：{str(e)}\n\n{tip}")
+        logger.error(f"错误--->{str(e)}")
+
+@client.on(events.NewMessage(chats=bot_id, from_users=chat_id, pattern=r"^监控明细$"))
+async def user(event):
+    try:
+        dlmsg = await funCXDL()
+        await asyncio.sleep(3)
+        msg = await jdbot.send_message(chat_id, f'\n================\n\t\t\t\t\t\t\t监控明细\n================\n{dlmsg}')
+        await asyncio.sleep(30)
         await jdbot.delete_messages(chat_id, msg)
     except Exception as e:
         title = "【💥错误💥】"
@@ -120,7 +181,11 @@ async def activityID(event):
                 continue
             if key in configs:
                 if isNow:
-                    await funCX(name, scriptPath)
+                    # name_p = f'{name}_{str(round(time.time() * 1000))}'
+                    msg = await funCX(name, scriptPath, msg)
+                    configs = rwcon("str")
+                    if kv in configs:
+                        continue
                 if 'VENDER_ID' in key:
                     # 防止同时触发开卡变量，自动加` ？
                     a = random.randint(5, 15)
@@ -152,6 +217,10 @@ async def activityID(event):
             for i in envNameList:
                 if i in text:
                     lable = True
+                    dl = readDL(False)
+                    if dl[name] > 0:
+                        dl[name] -= 1
+                        readDL(True, dl)
                     if isNow:
                         # await funCX(name, scriptPath)
                         await cmd(f'{cmdName} {scriptPath} {yanshi}')
