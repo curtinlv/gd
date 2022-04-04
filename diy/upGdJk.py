@@ -58,16 +58,7 @@ async def upgdjk(event):
             msg = await jdbot.send_message(chat_id, "抱歉！暂不支持v4在线更新监控！")
             await jdbot.delete_messages(chat_id, msg)
         else:
-            os.popen('rm -rf /ql/repo/gd')
-            if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false':
-                os.popen(f'cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git')
-            else:
-                os.popen(f'cd /ql/repo/ && git clone https://github.com/curtinlv/gd.git')
-            os.popen('rm -rf /ql/repo/dockerbot')
-            os.popen('mkdir /ql/repo/dockerbot')
-            os.popen('ln -sf /ql/repo/gd /ql/repo/dockerbot/jbot')
-            os.popen('pm2 stop jbot && rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ && pm2 start jbot')
-            # os.popen("ps -ef | grep jbot | grep -v grep | awk '{print $1}' |xargs kill -9")
+            os.popen('cd /ql && wget https://raw.githubusercontent.com/curtinlv/gd/main/update.sh && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
 
         
     except Exception as e:
