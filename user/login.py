@@ -108,5 +108,6 @@ async def user_login(event):
         await jdbot.edit_message(msg, '登录已超时，对话已停止')
     except Exception as e:
         await jdbot.send_message(chat_id, '登录失败\n 再重新登录\n' + str(e))
-    finally:
-        await user.disconnect()
+    # 注释应该是这个导致user？ 不回复的原因。
+    # finally:
+    #     await user.disconnect()

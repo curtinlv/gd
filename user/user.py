@@ -11,7 +11,7 @@ from .login import user
 from .. import chat_id, jdbot, logger, TOKEN
 from ..bot.utils import cmd, V4
 from ..diy.utils import rwcon, myzdjr_chatIds, my_chat_id, jk
-jk_version = 'v1.2.1'
+jk_version = 'v1.2.4'
 from ..bot.update import version as jk_version
 
 bot_id = int(TOKEN.split(":")[0])
@@ -191,6 +191,10 @@ async def activityID(event):
             key = kv.split("=")[0]
             value = re.findall(r'[\'|"]([^"]*)[\'|"]', kv)[0]
             configs = rwcon("str")
+            # 去掉一些奇怪的符号。
+            kv = kv.replace('`', '').replace('*', '')
+            key = key.replace('`', '').replace('*', '')
+            value = value.replace('`', '').replace('*', '')
             if kv in configs:
                 continue
             if key in configs:
