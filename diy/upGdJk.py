@@ -58,7 +58,7 @@ async def upgdjk(event):
             msg = await jdbot.send_message(chat_id, "抱歉！暂不支持v4在线更新监控！")
             await jdbot.delete_messages(chat_id, msg)
         else:
-            os.popen('cd /ql && wget https://raw.githubusercontent.com/curtinlv/gd/main/update.sh && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
+            os.popen('cd /ql && wget -O https://raw.githubusercontent.com/curtinlv/gd/main/update.sh && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
 
         
     except Exception as e:
