@@ -3,9 +3,9 @@
 const axios = require('axios');
 const fs = require("fs");
 const {format} = require("date-fns");
-const notify = require('../../../Documents/sendNotify');
+const notify = require('./sendNotify');
 const jdCookieNode = require('./jdCookie.js');
-const CryptoJS = require("../../Documents/crypto-js");
+const CryptoJS = require("crypto-js");
 
 let cookies = [];
 let testMode = process.env.TEST_MODE?.includes('on') ? true
