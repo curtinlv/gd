@@ -181,7 +181,7 @@ async function vvipclub_distributeBean_assist(timeout = 500) {
                       }
                       if ($.data.resultCode === "9000013"){
                         console.log(`body参数不正确`);
-                        label = 4;
+                        label = 5;
                         return
                       }
                       if ($.data.resultCode === "90000014"){
