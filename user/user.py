@@ -203,11 +203,11 @@ async def activityID(event):
                     configs = rwcon("str")
                     if kv in configs:
                         continue
-                # if 'VENDER_ID' in key:
+                if 'VENDER_ID' in key:
                     # 防止同时触发开卡变量，自动加*` ？
-                a = random.randint(3, 15)
+                    a = random.randint(3, 15)
                     # time.sleep(a)
-                await asyncio.sleep(a)
+                    await asyncio.sleep(a)
                 configs = re.sub(f'{key}=("|\').*("|\')', kv, configs)
                 change += f"【替换】 `{name}` 环境变量成功\n`{kv}`\n\n"
                 msg = await jdbot.edit_message(msg, change)
