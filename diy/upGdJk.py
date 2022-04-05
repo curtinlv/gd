@@ -58,9 +58,13 @@ async def upgdjk(event):
             msg = await jdbot.send_message(chat_id, "抱歉！暂不支持v4在线更新监控！")
             await jdbot.delete_messages(chat_id, msg)
         else:
-            os.popen('cd /ql && wget -O https://raw.githubusercontent.com/curtinlv/gd/main/update.sh && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
+            if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false' and 'github' in url:
+                os.popen('cd /ql && rm -f update.sh* && wget  -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
+            else:
+                os.popen('cd /ql && rm -f update.sh* && wget  -q https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
 
-        
+
+
     except Exception as e:
         title = "【💥错误💥】"
         name = "文件名：" + os.path.split(__file__)[-1].split(".")[0]
