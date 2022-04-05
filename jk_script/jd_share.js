@@ -16,7 +16,7 @@ SHARE_ACTIVITY_ID活动id
 */
 const $ = new Env("自动车-分享有礼");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const notify = $.isNode() ? require('../../../Documents/sendNotify') : '';
+const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
 let authorCodeList = [];
 let ownCookieNum = 4;
