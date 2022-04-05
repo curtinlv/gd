@@ -1,4 +1,4 @@
-version = 'v1.2.2'
+version = 'v1.2.3'
 botlog = """
 2022.4.3  (v1.1)
 * 增加队列
