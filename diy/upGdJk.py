@@ -44,11 +44,11 @@ async def upgdjk(event):
                 newversion = await getNewVer()
                 if newversion:
                     if jk_version == newversion:
-                        msg = await jdbot.edit_message(msg, f"当前版本:`【{jk_version}】`, 最新版本:`【{newversion}】`\n\n无需更新~")
+                        msg = await jdbot.edit_message(msg, f"当前版本:`【{jk_version}】`\n最新版本:`【[{newversion}](https://github.com/curtinlv/gd.git)】`\n\n无需更新~")
                         conv.cancel()
                         return
                     else:
-                        msg = await jdbot.edit_message(msg, f"当前版本:`{jk_version}`, 最新版本:{newversion}")
+                        msg = await jdbot.edit_message(msg, f"当前版本:`【{jk_version}】`\n最新版本:`【[{newversion}](https://github.com/curtinlv/gd.git)】`\n\n开始更新...")
                 else:
                     msg = await jdbot.edit_message(msg, f"获取新版本失败~")
                     conv.cancel()

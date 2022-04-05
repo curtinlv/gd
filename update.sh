@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+#set -e
 
 daili='https://git.metauniverse-cn.com'
 

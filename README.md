@@ -228,7 +228,7 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
 
   ```bash
   #本地执行
-  bash update.py
+  bash update.sh
   # 一键更新
   cd /ql && wget https://raw.githubusercontent.com/curtinlv/gd/main/update.sh && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &
   
@@ -236,6 +236,18 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
   tail -100f /ql/log/bot/up.log
   #取消查看日志
   Ctrl+C
+  ```
+
+* 2022.4.5(v1.2.2)
+
+  * 增加队列判断去重，解决同时触发同一变量多加符合问题！
+
+  ```bash
+  发送指令给机器人更新
+  /upgd
+  
+  或一键更新
+  cd /ql && wget https://raw.githubusercontent.com/curtinlv/gd/main/update.sh && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &
   ```
 
   
