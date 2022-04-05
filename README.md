@@ -247,7 +247,7 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
   /upgd
   
   或一键更新
-  cd /ql && wget https://raw.githubusercontent.com/curtinlv/gd/main/update.sh && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &
+  cd /ql rm -f update.sh* && wget -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/update.sh && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &
   ```
 
   
