@@ -34,6 +34,7 @@ for i in jk_list:
         envNameList.append(i["envName"])
         scriptPathList.append(i["scriptPath"])
         dlDict[i["name"]] = 0
+dlDict["v"] = []
 patternStr = ''
 envNum = len(envNameList)
 for i in range(envNum):
@@ -108,6 +109,19 @@ async def funCXDL():
         dlmsg += f"\n是否队列等待:`未开启`（如需开启，请配置jk.json的参数isNow=true）\n"
     return dlmsg
 
+# 增加再进入队列之前判断重复变量，解决设置变量添加的一些其他符号？
+async def isduilie(kv):
+    lable = False
+    dl = readDL(False)
+    for i in dl['v']:
+        if kv == i:
+            lable = True
+            break
+    if not lable:
+        dl = readDL(False)
+        dl['v'].append(kv)
+        readDL(True, dl)
+    return lable
 
 @client.on(events.NewMessage(chats=bot_id, from_users=chat_id, pattern=r"^(user|在吗)(\?|\？)$"))
 async def user(event):
@@ -180,6 +194,9 @@ async def activityID(event):
             if kv in configs:
                 continue
             if key in configs:
+                if await isduilie(kv):
+                    msg = await jdbot.edit_message(msg, f"变量已在队列【{kv}】, 本次取消改动。")
+                    continue
                 if isNow:
                     # name_p = f'{name}_{str(round(time.time() * 1000))}'
                     msg = await funCX(name, scriptPath, msg)
@@ -221,6 +238,13 @@ async def activityID(event):
                     if dl[name] > 0:
                         dl[name] -= 1
                         readDL(True, dl)
+                    try:
+                        for v in dl['v']:
+                            if kv == v:
+                                dl['v'].remove(kv)
+                                readDL(True, dl)
+                    except:
+                        pass
                     await cmd(f'{cmdName} {scriptPath} now')
                     # if isNow:
                     #     # await funCX(name, scriptPath)
