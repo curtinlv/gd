@@ -10,11 +10,13 @@ export zjdbody=""
 抓body方法：
 入口：微信小程序-赚京豆-瓜分京豆
 
-1.开团后立马发分享邀请发给你自己（重写一直开着的话，建议10秒内发邀请）
+1.开团后立马发分享邀请发到聊天窗口（重写一直开着的话，建议30秒内发邀请）
 
 2.开启重写，自己点击自己的邀请助力就会抓body（重写会触发自己给自己点击，如果没触发，让别的号去点击。）
 
 3.复制body设置变量，运行脚本，仅内部ck助力。
+
+ps：如果助力火爆，关闭重写，重新分享，再开启重写抓body
 
 
 
@@ -100,7 +102,7 @@ function GetBody() {
         var body = $response.body;
         let obj = JSON.parse(body);
             if(obj.data.assistStatus === 1){
-                if(obj.data.assistValidMilliseconds < 3590000 ){
+                if(obj.data.assistValidMilliseconds < 3570000 ){
                     encPin = obj.data.encPin;
                     console.log(`触发自己助力自己`);
                     obj['data']['encPin']= randomString(27) + '_Z5gj\n'
