@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-daili='https://git.metauniverse-cn.com'
-
 gitPull(){
     echo -e "\n开始更新gd机器人\n"
     rm -rf /ql/repo/gd

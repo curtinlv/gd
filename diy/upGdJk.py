@@ -10,6 +10,7 @@ from telethon import events, Button
 from ..bot.utils import press_event, V4
 from .. import chat_id, jdbot, logger, ch_name, BOT_SET
 from ..bot.update import version as jk_version
+from ..bot.utils import cmd
 
 
 async def getNewVer():
@@ -59,9 +60,11 @@ async def upgdjk(event):
             await jdbot.delete_messages(chat_id, msg)
         else:
             if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false':
-                os.popen('cd /ql && rm -f update.sh* && wget  -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
+                # os.popen('cd /ql && rm -f update.sh* && wget  -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
+                await cmd('cd /ql && rm -f update.sh* && wget  -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
             else:
-                os.popen('cd /ql && rm -f update.sh* && wget  -q https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
+                await cmd('cd /ql && rm -f update.sh* && wget  -q https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
+                # os.popen('cd /ql && rm -f update.sh* && wget  -q https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
 
 
 
