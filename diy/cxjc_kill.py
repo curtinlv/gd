@@ -33,11 +33,10 @@ async def pidkill(event):
                         continue
                     if "backend" in line:
                         continue
-                    if "node" in line:
-                        pid = line.split()[0]
-                        if killpid==pid:
-                            isdokill=1
-                            break
+                    pid = line.split()[0]
+                    if killpid==pid:
+                        isdokill=1
+                        break
             else:            
                 await jdbot.send_message(chat_id,'当前系统未执行任何脚本')
                 
@@ -55,18 +54,17 @@ async def pidkill(event):
             f = os.popen(cmd)
             txt = f.readlines()
             if txt:
-                for line in txt:
+                for line in txt:   
                     if "timeout" in line:
                         continue
                     if "/ql/build" in line:
                         continue
                     if "backend" in line:
                         continue
-                    if "node" in line:
-                        pid = line.split()[0]
-                        if killpid==pid:
-                            isdokill=1
-                            break
+                    pid = line.split()[0]
+                    if killpid==pid:
+                        isdokill=1
+                        break
             if isdokill==0:
                 await jdbot.send_message(chat_id,'进程'+killpid+'已被强制结束!')
             else:

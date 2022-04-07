@@ -10,14 +10,14 @@ from telethon import events
 from .. import chat_id, jdbot, logger, ch_name, BOT_SET
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^cx$'))
+@jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^/cx$'))
 async def cxjc(event):
-    try:
-        msg=await jdbot.send_message(chat_id, "开始查询进程...")
+    try:        
         cmd = "ps -ef"
         f = os.popen(cmd)
         txt = f.readlines() 
         strReturn=""
+        intcount=0
         if txt:
             for line in txt:
                 if "timeout" in line:
@@ -31,12 +31,18 @@ async def cxjc(event):
                     pid_name = line.split()[4]
                     res ="/kill"+pid+'文件名: '+pid_name+'\n'
                     strReturn=strReturn+res
+                    intcount=intcount+1
                 if "python3" in line and ".py" in line:
                     pid = line.split()[0].ljust(10,' ')
                     pid_name = line.split()[4]
                     res ="/kill"+pid+'文件名: '+pid_name+'\n'
                     strReturn=strReturn+res
-            await jdbot.delete_messages(chat_id,msg)
+                    intcount=intcount+1
+                if intcount==35:
+                    intcount=0
+                    if strReturn:
+                        await jdbot.send_message(chat_id, strReturn)
+                    strReturn=""
             if strReturn:
                 await jdbot.send_message(chat_id, strReturn)
             else:
