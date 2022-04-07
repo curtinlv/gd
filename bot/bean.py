@@ -1,10 +1,10 @@
 from PIL import Image, ImageFont, ImageDraw
-from telethon import events
+from telethon import events, Button
 from .. import LOG_DIR, jdbot, chat_id, BOT_SET, BOT_DIR, logger,  ch_name
 from prettytable import PrettyTable
 import subprocess
 from .beandata import get_bean_data
-from .utils import V4
+from .utils import V4,split_list, press_event
 
 BEAN_IN_FILE = f'{LOG_DIR}/bean_income.csv'
 BEAN_OUT_FILE = f'{LOG_DIR}/bean_outlay.csv'
@@ -22,6 +22,29 @@ async def bot_bean(event):
             text = msg_text[-1]
         else:
             text = None
+            
+        if text==None:
+            SENDER = event.sender_id
+            btn = []
+            for i in range(11):
+                btn.append(Button.inline(str(i+1), data=str(i+1)))
+            btn.append(Button.inline('取消', data='cancel'))
+            btn = split_list(btn, 3)            
+            async with jdbot.conversation(SENDER, timeout=90) as conv:
+                info='请选择要查询的账号:'
+                msg = await jdbot.edit_message(msg, info, buttons=btn, link_preview=False)
+                convdata = await conv.wait_event(press_event(SENDER))
+                res = bytes.decode(convdata.data)
+                if res == 'cancel':
+                    msg = await jdbot.edit_message(msg, '对话已取消')
+                    conv.cancel()
+                else:
+                    text = res
+                    msg = await jdbot.edit_message(msg, '开始查询账号'+text+'的资产，请稍后...')
+        if text==None:
+            await jdbot.delete_messages(chat_id, msg)
+            return 
+            
         if V4 and text == 'in':
             subprocess.check_output(
                 'jcsv', shell=True, stderr=subprocess.STDOUT)
