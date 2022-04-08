@@ -11,7 +11,7 @@ from .login import user
 from .. import chat_id, jdbot, logger, TOKEN
 from ..bot.utils import cmd, V4
 from ..diy.utils import rwcon, myzdjr_chatIds, my_chat_id, jk
-jk_version = 'v1.2.4'
+jk_version = 'v1.2.5'
 from ..bot.update import version as jk_version
 
 bot_id = int(TOKEN.split(":")[0])
@@ -259,7 +259,7 @@ async def activityID(event):
                 # 赚京豆助力，将获取到的团body发给自己测试频道，仅自己内部助力使用
                 elif "zjdbody" in text:
                     lable = True
-                    if str(event.message.peer_id.channel_id) in str(my_chat_id):
+                    if str(event.message.peer_id.channel_id) in str(my_chat_id) or str(event.message.from_id.user_id) in str(bot_id):
                         await cmd('task /ql/scripts/zxd.js now')
                     break
                 elif "jd_redrain_url" in text:
