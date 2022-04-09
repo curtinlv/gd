@@ -8,7 +8,7 @@ import requests
 import re
 from telethon import events, Button
 from ..bot.utils import press_event, V4
-from .. import chat_id, jdbot, logger, ch_name, BOT_SET
+from .. import chat_id, jdbot, logger, BOT_SET
 from ..bot.update import version as jk_version
 from ..bot.utils import cmd
 
@@ -32,7 +32,7 @@ async def upgdjk(event):
         SENDER = event.sender_id
         btns = [Button.inline("Yes, I do.", data='yes'), Button.inline("No~", data='cancel')]
         async with jdbot.conversation(SENDER, timeout=60) as conv:
-            msg = await conv.send_message(f"您是否更新要[curtinlv/gd](https://github.com/curtinlv/gd.git)库的监控", buttons=btns)
+            msg = await conv.send_message(f"您是否更新要[curtinlv/gd](https://github.com/curtinlv/gd.git)库的监控", buttons=btns, link_preview=False)
             convdata = await conv.wait_event(press_event(SENDER))
             res = bytes.decode(convdata.data)
             if res == 'cancel':
@@ -41,15 +41,15 @@ async def upgdjk(event):
                 conv.cancel()
                 return
             else:
-                msg = await jdbot.edit_message(msg, f"好的，请稍等，正在检测版本...\n\n升级成功后会自动重启机器人。如有问题请到群讨论https://t.me/topstyle996\n\n`conf`目录配置文件如有变动，请自行更新到/ql/config")
+                msg = await jdbot.edit_message(msg, f"好的，请稍等，正在检测版本...\n\n升级成功后会自动重启机器人。如有问题请到群讨论https://t.me/topstyle996\n\n`conf`目录配置文件如有变动，请自行更新到/ql/config", link_preview=False)
                 newversion = await getNewVer()
                 if newversion:
                     if jk_version == newversion:
-                        msg = await jdbot.edit_message(msg, f"当前版本:[{jk_version}](https://github.com/curtinlv/gd.git)\n最新版本:[{newversion}](https://github.com/curtinlv/gd.git)\n\n无需更新~")
+                        msg = await jdbot.edit_message(msg, f"当前版本:[{jk_version}](https://github.com/curtinlv/gd.git)\n最新版本:[{newversion}](https://github.com/curtinlv/gd.git)\n\n无需更新~", link_preview=False)
                         conv.cancel()
                         return
                     else:
-                        msg = await jdbot.edit_message(msg, f"当前版本:[{jk_version}](https://github.com/curtinlv/gd.git)\n最新版本:[{newversion}](https://github.com/curtinlv/gd.git)\n\n开始更新...")
+                        msg = await jdbot.edit_message(msg, f"当前版本:[{jk_version}](https://github.com/curtinlv/gd.git)\n最新版本:[{newversion}](https://github.com/curtinlv/gd.git)\n\n开始更新...", link_preview=False)
                 else:
                     msg = await jdbot.edit_message(msg, f"获取新版本失败~")
                     conv.cancel()
@@ -60,13 +60,9 @@ async def upgdjk(event):
             await jdbot.delete_messages(chat_id, msg)
         else:
             if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false':
-                # os.popen('cd /ql && rm -f update.sh* && wget  -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
                 await cmd('cd /ql && rm -f update.sh* && wget  -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
             else:
                 await cmd('cd /ql && rm -f update.sh* && wget  -q https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
-                # os.popen('cd /ql && rm -f update.sh* && wget  -q https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
-
-
 
     except Exception as e:
         title = "【💥错误💥】"
@@ -79,8 +75,3 @@ async def upgdjk(event):
             msg = await jdbot.edit_message(msg, f"已超时")
             await jdbot.delete_messages(chat_id, msg)
         logger.error(f"错误--->{str(e)}")
-
-
-if ch_name:
-    jdbot.add_event_handler(upgdjk, events.NewMessage(from_users=chat_id, pattern=BOT_SET['命令别名']['cron']))
-

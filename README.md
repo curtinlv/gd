@@ -6,7 +6,7 @@
   青龙安装Bot监控
   <br>
 </h1>
-- [x] 2022.4.9 已兼容新版青龙路经
+- [x]  2022.4.9 已兼容青龙`2.12.x`版本路经
 
 ## 1.进入容器内
 
@@ -20,7 +20,7 @@ docker exec -it qinglong /bin/bash
 - [x] 一键安装
 
 ```
-rm -f install.sh* && wget -q https://raw.githubusercontent.com/curtinlv/gd/main/install.sh && bash install.sh
+rm -f install.sh* && wget -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/install.sh && bash install.sh
 ```
 
 
@@ -71,9 +71,9 @@ tail -100f /ql/data/log/bot/run.log
 
 ![图2：完成登录，tg机器人发通知](https://raw.githubusercontent.com/curtinlv/gd/main/img/p2.png)
 
-## 登录user开启监控
+## **登录user开启监控**
 
-- [x] a.发送【/user】 点击“重新登录”
+- [x] a.发送【/user】 点击 **“重新登录”**
 
 ![图1：首次登录授权个人tg](https://raw.githubusercontent.com/curtinlv/gd/main/img/p5.png)
 
@@ -128,9 +128,11 @@ pm2 restart jbot
 
 `/clean` 清理缓存日志，释放空间
 
+`/help` 命令帮助
 
 
-## 最近更新 2022.4.9(v1.2.6)
+
+## 最近更新 2022.4.9(v1.2.7)
 
 * 新增清理功能 /clean
 * 兼容青龙版本2.12.x

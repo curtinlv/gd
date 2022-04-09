@@ -126,7 +126,7 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
 
 ```
 
-* 2022.4.9(v.1.2.6)
+* 2022.4.9 (v.1.2.6)
 
   * 新增清理功能 `/clean`
   * 兼容青龙版本2.12.x
@@ -135,4 +135,9 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
   - [x] 机器人更新指令：`/upgd`
 
   - [x] 命令更新: `cd /ql && rm -f update.sh* && wget -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/update.sh && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &`
+
+* 2022.4.9 (v.1.2.7)
+
+  * 优化`/clean n` 可指定天数清理日志，n为天数
+  * 优化变量监控正则
 

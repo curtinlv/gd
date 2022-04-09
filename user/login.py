@@ -15,9 +15,7 @@ try:
     else:
         QLMain = '/ql'
 except:
-    pass
-
-
+    QLMain = '/ql'
 
 if BOT.get('proxy_user') and BOT['proxy_user'] != "代理的username,有则填写，无则不用动":
     proxy = {

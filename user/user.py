@@ -11,11 +11,10 @@ from .login import user
 from .. import chat_id, jdbot, logger, TOKEN
 from ..bot.utils import cmd, V4
 from ..diy.utils import rwcon, myzdjr_chatIds, my_chat_id, jk
-jk_version = 'v1.2.5'
+jk_version = 'v1.2.7'
 from ..bot.update import version as jk_version
 
 bot_id = int(TOKEN.split(":")[0])
-# myzdjr_chatIds.append(bot_id)
 client = user
 ## 新增配置自定义监控
 jk_list = jk["jk"]
@@ -62,14 +61,14 @@ def readDL(lable, dl=dlDict):
 readDL(True)
 ########
 # 开启队列
-async def funCX(name, scriptPath, msg, lable=1):
+async def funCX(name, scriptPath, msg, group, lable=1):
     try:
         cxjc = f'ps -ef | egrep -v "timeout|grep" | grep {scriptPath} | egrep "python|node"'
         result = os.popen(cxjc)
         r = result.readlines()
         if r:
             a = random.randint(60, 180) #队列检测休眠时间
-            msg = await jdbot.edit_message(msg, f"【队列】`[{name}]`当前已在跑，已加入队列等待。本次等待`{a}`秒后再次尝试。可发送【`监控明细`】查询队列情况。")
+            msg = await jdbot.edit_message(msg, f"【队列】{group} 的 `[{name}]` 变量当前已在跑，已加入队列等待。本次等待`{a}`秒后再次尝试。可发送【`监控明细`】查询队列情况。")
             if lable < 21:
                 if lable == 1:
                     dl = readDL(False)
@@ -77,11 +76,11 @@ async def funCX(name, scriptPath, msg, lable=1):
                     readDL(True, dl)
                 lable += 1
                 await asyncio.sleep(a)
-                return await funCX(name, scriptPath, msg, lable)
+                return await funCX(name, scriptPath, msg, lable, group)
         else:
             msg = await jdbot.edit_message(msg, f"【队列】`[{name}]`当前空闲，后台将随机延时执行。")
     except Exception as e:
-        print(e)
+        logger.error(f"funCX->{e}")
     return msg
 
 # 查询当前已运行
@@ -109,7 +108,7 @@ async def funCXDL():
         dlmsg += f"\n是否队列等待:`未开启`（如需开启，请配置jk.json的参数isNow=true）\n"
     return dlmsg
 
-# 增加再进入队列之前判断重复变量，解决设置变量添加的一些其他符号？
+# 增加再进入队列之前判断重复变量
 async def isduilie(kv):
     lable = False
     dl = readDL(False)
@@ -141,10 +140,9 @@ async def user(event):
         logger.error(f"错误--->{str(e)}")
 
 @client.on(events.NewMessage(chats=bot_id, from_users=chat_id, pattern=r"^监控明细$"))
-async def user(event):
+async def user_mx(event):
     try:
         dlmsg = await funCXDL()
-        await asyncio.sleep(3)
         msg = await jdbot.send_message(chat_id, f'\n================\n\t\t\t\t\t\t\t监控明细\n================\n{dlmsg}')
         await asyncio.sleep(30)
         await jdbot.delete_messages(chat_id, msg)
@@ -156,11 +154,12 @@ async def user(event):
         await jdbot.send_message(chat_id, f"{title}\n\n{name}\n{function}\n错误原因：{str(e)}\n\n{tip}")
         logger.error(f"错误--->{str(e)}")
 
-
-@client.on(events.NewMessage(chats=myzdjr_chatIds, pattern=r'export\s(%s).*=(".*"|\'.*\')' % patternStr))
+pat = '.*export\s(%s).*=(".*"|\'.*\')' % patternStr
+@client.on(events.NewMessage(chats=myzdjr_chatIds, pattern=r'%s' % pat))
 async def activityID(event):
     try:
         text = event.message.text
+        group = f'[{event.chat.title}](https://t.me/c/{event.chat.id}/{event.message.id})'
         name = None
         for i in envNameList:
             if i in text:
@@ -181,13 +180,14 @@ async def activityID(event):
                 break
         if not name:
             return
-        msg = await jdbot.send_message(chat_id, f'【监控】 监测到`{name}` 环境变量！')
+        msg = await jdbot.send_message(chat_id, f'【监控】{group} 发出的 `[{name}]` 环境变量！', link_preview=False)
         messages = event.message.text.split("\n")
         change = ""
         for message in messages:
             if "export " not in message:
                 continue
-            kv = message.replace("export ", "")
+            kvs = re.sub(r'.*export ', 'export ', message)
+            kv = kvs.replace("export ", "")
             key = kv.split("=")[0]
             value = re.findall(r'[\'|"]([^"]*)[\'|"]', kv)[0]
             configs = rwcon("str")
@@ -202,18 +202,16 @@ async def activityID(event):
                     msg = await jdbot.edit_message(msg, f"变量已在队列【{kv}】, 本次取消改动。")
                     continue
                 if isNow:
-                    # name_p = f'{name}_{str(round(time.time() * 1000))}'
-                    msg = await funCX(name, scriptPath, msg)
+                    msg = await funCX(name, scriptPath, msg, group)
                     configs = rwcon("str")
                     if kv in configs:
                         continue
                 if 'VENDER_ID' in key:
-                    # 防止同时触发开卡变量，自动加*` ？
-                    a = random.randint(3, 15)
-                    # time.sleep(a)
+                    # 监控开卡随机休眠
+                    a = random.randint(3, 10)
                     await asyncio.sleep(a)
-                configs = re.sub(f'{key}=("|\').*("|\')', kv, configs)
-                change += f"【替换】 `{name}` 环境变量成功\n`{kv}`\n\n"
+                configs = re.sub(f'{key}=("|\').*("|\').*', kv, configs)
+                change += f"【替换】{group} 发出的 `[{name}]` 环境变量成功\n`{kv}`\n\n"
                 msg = await jdbot.edit_message(msg, change)
             else:
                 if V4:
@@ -227,11 +225,11 @@ async def activityID(event):
                 else:
                     configs = rwcon("str")
                     configs += f'export {key}="{value}"\n'
-                change += f"【新增】 `{name}` 环境变量成功\n`{kv}`\n\n"
+                change += f"【新增】{group} 发出的 `[{name}]` 环境变量成功\n`{kv}`\n\n"
                 msg = await jdbot.edit_message(msg, change)
             rwcon(configs)
         if len(change) == 0:
-            await jdbot.edit_message(msg, f"【取消】 `{name}` 环境变量无需改动！")
+            await jdbot.edit_message(msg, f"【取消】{group} 发出的 `[{name}]` 变量无需改动！")
             return
         try:
             lable = None
@@ -250,16 +248,11 @@ async def activityID(event):
                     except:
                         pass
                     await cmd(f'{cmdName} {scriptPath} now')
-                    # if isNow:
-                    #     # await funCX(name, scriptPath)
-                    #     await cmd(f'{cmdName} {scriptPath} {yanshi}')
-                    # else:
-                    #     await cmd(f'{cmdName} {scriptPath} now')
                     break
                 # 赚京豆助力，将获取到的团body发给自己测试频道，仅自己内部助力使用
                 elif "zjdbody" in text:
                     lable = True
-                    if str(event.message.peer_id.channel_id) in str(my_chat_id) or str(event.message.from_id.user_id) in str(bot_id):
+                    if str(event.chat.id) in str(my_chat_id):
                         await cmd('task /ql/scripts/zxd.js now')
                     break
                 elif "jd_redrain_url" in text:

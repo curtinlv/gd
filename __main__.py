@@ -33,13 +33,13 @@ async def new_ver():
             with open(BOT_UP_LOG, 'a', encoding='utf-8') as f:
                 f.writelines([version, botlog])
             await jdbot.send_message(chat_id,
-                                     f'[机器人上新了](https://github.com/chiupam/JD_Diy.git)\n{botlog}\n运行日志为log/bot/run.log\n\n\t{info}',
+                                     f'[机器人上新了](https://github.com/curtinlv/gd.git)\n{botlog}\n运行日志为log/bot/run.log\n\n\t{info}',
                                      link_preview=False)
     else:
         with open(BOT_UP_LOG, 'w+', encoding='utf-8') as f:
             f.writelines([version, botlog])
         await jdbot.send_message(chat_id,
-                                 f'[机器人上新了](https://github.com/chiupam/JD_Diy.git)\n{botlog}\n运行日志为log/bot/run.log\n\n\t{info}',
+                                 f'[机器人上新了](https://github.com/curtinlv/gd.git)\n{botlog}\n运行日志为log/bot/run.log\n\n\t{info}',
                                  link_preview=False)
 
 
