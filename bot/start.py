@@ -35,6 +35,7 @@ async def bot_start(event):
     /export 管理添加的环境变量。
     cx 查询当前运行的进程。
     /upgd 更新gd监控代码。
+    /clean 清理缓存日志.
     
     此外，直接发送文件至BOT，会让您选择保存到目标文件夹，支持保存并运行。发送以 .git 结尾的链接开始添加仓库。发送以 .js .sh .py结尾的已raw链接开始下载文件。发送格式为 key="value" 或者 key='value' 的消息开始添加环境变量。'''
     else:
@@ -67,6 +68,7 @@ async def bot_start(event):
     /env 青龙管理环境变量。
     cx 查询当前运行的进程。
     /upgd 更新gd监控代码。
+    /clean 清理缓存日志.
     
     此外，直接发送文件至BOT，会让您选择保存到目标文件夹，支持保存并运行。发送以 .git 结尾的链接开始添加仓库。发送以 .js .sh .py结尾的已raw链接开始下载文件。发送格式为 key="value" 或者 key='value' 的消息开始添加环境变量。'''
     await jdbot.send_message(chat_id, msg)

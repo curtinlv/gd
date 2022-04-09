@@ -1,12 +1,23 @@
 import asyncio
 import os
-
 from telethon import TelegramClient
 from telethon import events, Button
 
 from .. import API_HASH, API_ID, BOT, PROXY_START, PROXY_TYPE, connectionType, CONFIG_DIR
 from .. import chat_id, jdbot
 from ..bot.utils import press_event, V4, row, split_list
+
+# 兼容青龙新版目录
+try:
+    qlver = os.environ['QL_BRANCH']
+    if qlver >= 'v2.12.0':
+        QLMain='/ql/data'
+    else:
+        QLMain = '/ql'
+except:
+    pass
+
+
 
 if BOT.get('proxy_user') and BOT['proxy_user'] != "代理的username,有则填写，无则不用动":
     proxy = {
@@ -36,7 +47,7 @@ def restart():
 
 
 def start():
-    file = "/jd/config/botset.json" if V4 else "/ql/config/botset.json"
+    file = "/jd/config/botset.json" if V4 else f"{QLMain}/config/botset.json"
     with open(file, "r", encoding="utf-8") as f1:
         botset = f1.read()
     botset = botset.replace('user": "False"', 'user": "True"')
@@ -46,7 +57,7 @@ def start():
 
 
 def close():
-    file = "/jd/config/botset.json" if V4 else "/ql/config/botset.json"
+    file = "/jd/config/botset.json" if V4 else f"{QLMain}/config/botset.json"
     with open(file, "r", encoding="utf-8") as f1:
         botset = f1.read()
     botset = botset.replace('user": "True"', 'user": "False"')
@@ -56,7 +67,7 @@ def close():
 
 
 def state():
-    file = "/jd/config/botset.json" if V4 else "/ql/config/botset.json"
+    file = "/jd/config/botset.json" if V4 else f"{QLMain}/config/botset.json"
     with open(file, "r", encoding="utf-8") as f1:
         botset = f1.read()
     if 'user": "True"' in botset:
@@ -70,7 +81,7 @@ async def user_login(event):
     try:
         login = False
         sender = event.sender_id
-        session = "/jd/config/user.session" if V4 else "/ql/config/user.session"
+        session = "/jd/config/user.session" if V4 else f"{QLMain}/config/user.session"
         async with jdbot.conversation(sender, timeout=120) as conv:
             msg = await conv.send_message("请做出你的选择")
             buttons = [
@@ -83,7 +94,7 @@ async def user_login(event):
             res = bytes.decode(convdata.data)
             if res == 'cancel':
                 await jdbot.edit_message(msg, '对话已取消')
-                return
+                # return
             elif res == 'close':
                 await jdbot.edit_message(msg, "关闭成功，准备重启机器人！")
                 close()
@@ -108,6 +119,5 @@ async def user_login(event):
         await jdbot.edit_message(msg, '登录已超时，对话已停止')
     except Exception as e:
         await jdbot.send_message(chat_id, '登录失败\n 再重新登录\n' + str(e))
-    # 注释应该是这个导致user？ 不回复的原因。
     # finally:
     #     await user.disconnect()
