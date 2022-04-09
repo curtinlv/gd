@@ -60,9 +60,9 @@ async def upgdjk(event):
             await jdbot.delete_messages(chat_id, msg)
         else:
             if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false':
-                await cmd('cd /ql && rm -f update.sh* && wget  -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
+                await cmd('if [ -d /ql/data ];then QL=/ql/data;else QL=/ql; fi;cd ${QL} && rm -f update.sh* && wget  -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >${QL}/log/bot/up.log &')
             else:
-                await cmd('cd /ql && rm -f update.sh* && wget  -q https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &')
+                await cmd('if [ -d /ql/data ];then QL=/ql/data;else QL=/ql; fi;cd ${QL} && rm -f update.sh* && wget  -q https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >${QL}/log/bot/up.log &')
 
     except Exception as e:
         title = "【💥错误💥】"
