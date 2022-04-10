@@ -11,7 +11,7 @@ from .login import user
 from .. import chat_id, jdbot, logger, TOKEN
 from ..bot.utils import cmd, V4
 from ..diy.utils import rwcon, myzdjr_chatIds, my_chat_id, jk
-jk_version = 'v1.2.8'
+jk_version = 'v1.2.9'
 from ..bot.update import version as jk_version
 
 bot_id = int(TOKEN.split(":")[0])
@@ -63,7 +63,7 @@ readDL(True)
 # 开启队列
 async def funCX(name, scriptPath, msg, group, lable=1):
     try:
-        cxjc = f'ps -ef | egrep -v "timeout|grep" | grep {scriptPath} | egrep "python|node"'
+        cxjc = f'ps -ef | egrep -v "tail|timeout|grep" | grep {os.path.basename(scriptPath)} | egrep "python|node"'
         result = os.popen(cxjc)
         r = result.readlines()
         if r:

@@ -143,12 +143,13 @@ rm -rf /ql/data/jbot/*
 
 
 
-## 最近更新 2022.4.10(v1.2.8)
+## 最近更新 2022.4.10(v1.2.9)
 
 * 新增清理功能 /clean
 * 兼容青龙版本2.12.x
-* 修复一些问题
 * 优化变量匹配正则
+* 解决user？不回复问题
+* 优化队列问题
 
 [更多](https://github.com/curtinlv/gd/blob/main/updateLog.md)
 
