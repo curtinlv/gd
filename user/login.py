@@ -4,7 +4,7 @@ from telethon import TelegramClient
 from telethon import events, Button
 
 from .. import API_HASH, API_ID, BOT, PROXY_START, PROXY_TYPE, connectionType, CONFIG_DIR
-from .. import chat_id, jdbot
+from .. import chat_id, jdbot, BOT_SET, logger
 from ..bot.utils import press_event, V4, row, split_list
 
 # 兼容青龙新版目录
@@ -28,16 +28,22 @@ elif PROXY_TYPE == "MTProxy":
     proxy = (BOT['proxy_add'], BOT['proxy_port'], BOT['proxy_secret'])
 else:
     proxy = (BOT['proxy_type'], BOT['proxy_add'], BOT['proxy_port'])
+
+
 # 开启tg对话
 if PROXY_START and BOT.get('noretry') and BOT['noretry']:
     user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH, connection=connectionType, proxy=proxy)
 elif PROXY_START:
-    user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH, connection=connectionType, proxy=proxy, connection_retries=None)
+    user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH, connection=connectionType, proxy=proxy,
+                          connection_retries=None)
 elif BOT.get('noretry') and BOT['noretry']:
     user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH)
 else:
     user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH, connection_retries=None)
-
+#解决/user重复对话, user?不回复问题
+if BOT_SET['开启user'].lower() == 'true':
+    logger.info("开启user监控")
+    user = user.start()
 
 def restart():
     text = "pm2 restart jbot"
