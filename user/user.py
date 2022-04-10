@@ -162,7 +162,7 @@ async def activityID(event):
         try:
             group = f'[{event.chat.title}](https://t.me/c/{event.chat.id}/{event.message.id})'
         except:
-            group = f'[{event.message.peer_id.channel_id}](https://t.me/c/{event.message.peer_id.channel_id}/{event.message.id})'
+            group = f'[{event.chat.id}](https://t.me/c/{event.chat.id}/{event.message.id})'
         name = None
         for i in envNameList:
             if i in text:
@@ -255,7 +255,7 @@ async def activityID(event):
                 # 赚京豆助力，将获取到的团body发给自己测试频道，仅自己内部助力使用
                 elif "zjdbody" in text:
                     lable = True
-                    if str(event.message.peer_id.channel_id) in str(my_chat_id):
+                    if str(event.chat.id) in str(my_chat_id):
                         await cmd('task /ql/scripts/zxd.js now')
                     break
                 elif "jd_redrain_url" in text:
