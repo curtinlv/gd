@@ -114,6 +114,17 @@ pm2 stop jbot
 ## 重启机器人
 pm2 restart jbot
 
+## 一键更新1
+rm -rf /ql/repo/gd && cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git && pm2 stop jbot ; rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ ; pm2 start jbot
+
+#或一键更新2
+if [ -d /ql/data ];then QL=/ql/data;else QL=/ql; fi;cd ${QL} && rm -f update.sh* && wget  -q https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && bash update.sh
+
+## 卸载机器人
+pm2 stop jbot && pm2 delete jbot
+rm -rf /ql/jbot/*
+rm -rf /ql/data/jbot/*
+
 ```
 
 
@@ -132,11 +143,12 @@ pm2 restart jbot
 
 
 
-## 最近更新 2022.4.9(v1.2.7)
+## 最近更新 2022.4.10(v1.2.8)
 
 * 新增清理功能 /clean
 * 兼容青龙版本2.12.x
 * 修复一些问题
+* 优化变量匹配正则
 
 [更多](https://github.com/curtinlv/gd/blob/main/updateLog.md)
 

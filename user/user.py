@@ -11,7 +11,7 @@ from .login import user
 from .. import chat_id, jdbot, logger, TOKEN
 from ..bot.utils import cmd, V4
 from ..diy.utils import rwcon, myzdjr_chatIds, my_chat_id, jk
-jk_version = 'v1.2.7'
+jk_version = 'v1.2.8'
 from ..bot.update import version as jk_version
 
 bot_id = int(TOKEN.split(":")[0])
@@ -154,12 +154,15 @@ async def user_mx(event):
         await jdbot.send_message(chat_id, f"{title}\n\n{name}\n{function}\n错误原因：{str(e)}\n\n{tip}")
         logger.error(f"错误--->{str(e)}")
 
-pat = '.*export\s(%s).*=(".*"|\'.*\')' % patternStr
+pat = '(.|\\n)*export\s(%s).*=(".*"|\'.*\')' % patternStr
 @client.on(events.NewMessage(chats=myzdjr_chatIds, pattern=r'%s' % pat))
 async def activityID(event):
     try:
         text = event.message.text
-        group = f'[{event.chat.title}](https://t.me/c/{event.chat.id}/{event.message.id})'
+        try:
+            group = f'[{event.chat.title}](https://t.me/c/{event.chat.id}/{event.message.id})'
+        except:
+            group = f'[{event.message.peer_id.channel_id}](https://t.me/c/{event.message.peer_id.channel_id}/{event.message.id})'
         name = None
         for i in envNameList:
             if i in text:
@@ -195,7 +198,7 @@ async def activityID(event):
             kv = kv.replace('`', '').replace('*', '')
             key = key.replace('`', '').replace('*', '')
             value = value.replace('`', '').replace('*', '')
-            if kv in configs:
+            if value in configs:
                 continue
             if key in configs:
                 if await isduilie(kv):
@@ -252,7 +255,7 @@ async def activityID(event):
                 # 赚京豆助力，将获取到的团body发给自己测试频道，仅自己内部助力使用
                 elif "zjdbody" in text:
                     lable = True
-                    if str(event.chat.id) in str(my_chat_id):
+                    if str(event.message.peer_id.channel_id) in str(my_chat_id):
                         await cmd('task /ql/scripts/zxd.js now')
                     break
                 elif "jd_redrain_url" in text:

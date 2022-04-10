@@ -1,8 +1,6 @@
-version = 'v1.2.7'
+version = 'v1.2.8'
 botlog = """
-2022.4.9 (v1.2.7)
-    * 优化`/clean n` 可指定天数清理日志，n为天数
+2022.4.10 (v1.2.8)
     * 优化变量监控正则
-    * 等等...
 [更多](https://github.com/curtinlv/gd/blob/main/updateLog.md)
 """
