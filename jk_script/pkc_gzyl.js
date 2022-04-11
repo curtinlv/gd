@@ -77,6 +77,11 @@ let isGetbody = typeof $request !== 'undefined';
           break
         }
       gzylbody = $.PKC_GZYLArr[b];
+      if($.index != cookiesArr.length){
+        await $.wait(parseInt(3, 10) * 1000)
+      }
+      if($.index % 4 == 0) console.log('休息5分钟');
+      if($.index % 4 == 0) await $.wait(parseInt(Math.random() * 5000 + 300000, 10));
       await drawShopGift(3000);
     }
   }
