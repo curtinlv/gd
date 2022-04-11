@@ -107,6 +107,18 @@
             "name": "M关注有礼",
             "envName":"M_FOLLOW_SHOP_ARGV",
             "scriptPath":"m_jd_follow_shop.js"
+        },
+        {
+            "isOpen": true,
+            "name": "PKC关注有礼",
+            "envName":"PKC_GZYL",
+            "scriptPath":"/ql/repo/gd/jk_script/pkc_gzyl.js"
+        },
+        {
+            "isOpen": true,
+            "name": "PKC关注有礼-特效",
+            "envName":"PKC_TXGZYL",
+            "scriptPath":"/ql/repo/gd/jk_script/pkc_txgzyl.js"
         }
  
    ]

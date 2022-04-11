@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+sendNotify.js
+jdCookie.js
+.gitignore
+/jk_script/sendNotify.js
+/jk_script/jdCookie.js

@@ -1,0 +1,165 @@
+{
+  "id": "curtin.app.sub",
+  "name": "Curtin脚本订阅",
+  "author": "@Curtin",
+  "icon": "https://gitee.com/curtinlv/img/raw/master/tx.png",
+  "repo": "https://github.com/curtinlv/gd",
+  "apps": [
+    {
+      "id": "telegram",
+      "name": "皮卡车-TG推送",
+      "author": "@Curtin",
+      "keys": [
+        "TG_BOT_TOKEN","TG_USER_ID","TG_PROXY_HOST","TG_PROXY_PORT","TG_PROXY_AUTH","TG_API_HOST"
+      ],
+      "descs_html": [
+        "<h4 align=\"center\">非Node.js环境设置tg推送，为自助监控变量准备<br><br><a href=\"https://t.me/TopStyle2021\">[TG交流频道]</a></h4>"
+      ],
+      "settings": [
+
+        {
+          "id": "TG_BOT_TOKEN",
+          "name": "监控机器人token",
+          "val": "",
+          "type": "text",
+          "desc": "填写自己申请@BotFather的Token，如10xxx4:AAFcqxxxxgER5uw"
+        },
+        {
+          "id": "TG_USER_ID",
+          "name": "监控的群组id",
+          "val": "",
+          "type": "text",
+          "desc": "该群组需要添加监控机器人，且有权限发信息"
+        },
+        {
+          "id": "TG_PROXY_HOST",
+          "name": "代理IP（选填）",
+          "val": "",
+          "type": "text",
+          "desc": "填写代理IP地址，代理类型为 http，比如您代理是 http://127.0.0.1:1080，则填写 \"127.0.0.1\""
+        },
+        {
+          "id": "TG_PROXY_PORT",
+          "name": "代理端口（选填）",
+          "val": "",
+          "type": "text",
+          "desc": "填写代理端口号，代理类型为 http，比如您代理是 http://127.0.0.1:1080，则填写 \"1080\""
+        },
+        {
+          "id": "TG_PROXY_AUTH",
+          "name": "代理的认证参数（选填）",
+          "val": "",
+          "type": "text",
+          "desc": "代理的认证参数（选填）"
+        },
+        {
+          "id": "TG_API_HOST",
+          "name": "api自建反向代理地址（选填）",
+          "val": "",
+          "type": "text",
+          "desc": "api自建的反向代理地址(不懂可忽略,telegram机器人通知推送功能中非必填),默认tg官方api(环境变量名:TG_API_HOST)教程：https://www.hostloc.com/thread-805441-1-1.html，"
+        }
+      ],
+      "author": "@Curtin",
+      "repo": "https://github.com/curtinlv/gd",
+      "script": "#",
+      "icons": [
+        "https://gitee.com/curtinlv/img/raw/master/tx/pkc_7_135x135.png",
+        "https://gitee.com/curtinlv/img/raw/master/tx/pkc_7_135x135.png"
+      ]
+
+
+    },
+
+    {
+      "id": "zjd",
+      "name": "赚京豆-瓜分京豆",
+      "author": "@Curtin",
+      "keys": [
+        "zjdbody"
+      ],
+      "descs_html": [
+        "<h4 align=\"center\">脚本说明点击查看<a href=\"https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_zjd.js\">脚本注释</a></h4>"
+      ],
+      "settings": [
+
+        {
+          "id": "zjdbody",
+          "name": "赚京豆助力Body",
+          "val": "",
+          "type": "text",
+          "desc": "赚京豆助力Body"
+        }
+      ],
+      "author": "@Curtin",
+      "repo": "https://github.com/curtinlv/gd",
+      "script": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_zjd.js",
+      "icons": [
+        "https://gitee.com/curtinlv/img/raw/master/tx/pkc_4_135x135.png",
+        "https://gitee.com/curtinlv/img/raw/master/tx/pkc_4_135x135.png"
+      ]
+
+
+    },
+     {
+      "id": "pkc_gzyl",
+      "name": "PKC关注有礼",
+      "author": "@Curtin",
+      "keys": [
+        "PKC_GZYL"
+      ],
+      "descs_html": [
+        "<h4 align=\"center\">脚本说明点击查看<a href=\"https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_gzyl.js\">脚本注释</a></h4>"
+      ],
+      "settings": [
+
+        {
+          "id": "PKC_GZYL",
+          "name": "PKC关注有礼Body",
+          "val": "",
+          "type": "text",
+          "desc": "PKC关注有礼Body"
+        }
+      ],
+      "author": "@Curtin",
+      "repo": "https://github.com/curtinlv/gd",
+      "script": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_gzyl.js",
+      "icons": [
+        "https://gitee.com/curtinlv/img/raw/master/tx/pkc_2_135x135.png",
+        "https://gitee.com/curtinlv/img/raw/master/tx/pkc_2_135x135.png"
+      ]
+
+
+    },
+    {
+      "id": "pkc_txgzyl",
+      "name": "PKC关注有礼-特效",
+      "author": "@Curtin",
+      "keys": [
+        "PKC_TXGZYL"
+      ],
+      "descs_html": [
+        "<h4 align=\"center\">脚本说明点击查看<a href=\"https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_txgzyl.js\">脚本注释</a></h4>"
+      ],
+      "settings": [
+
+        {
+          "id": "PKC_TXGZYL",
+          "name": "PKC关注有礼-特效",
+          "val": "",
+          "type": "text",
+          "desc": "PKC关注有礼-特效id"
+        }
+      ],
+      "author": "@Curtin",
+      "repo": "https://github.com/curtinlv/gd",
+      "script": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_txgzyl.js",
+      "icons": [
+        "https://gitee.com/curtinlv/img/raw/master/tx/pkc_3_135x135.png",
+        "https://gitee.com/curtinlv/img/raw/master/tx/pkc_4_135x135.png"
+      ]
+
+
+    }
+  ]
+}

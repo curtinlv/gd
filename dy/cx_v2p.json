@@ -1,0 +1,69 @@
+{
+  "name": "elecV2P订阅-Curtin",
+  "type": "rewrite",
+  "note": "该订阅目前仅适用于 elecV2P。更多说明请查看: https://github.com/curtinlv/gd",
+  "author": "Curtin",
+  "resource": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/dy/cx_v2p.json",
+  "mitmhost": [
+    "api.m.jd.com", "lzkj-isv.isvjcloud.com"
+  ],
+  "rewrite": [
+    {
+      "match": "^https?://api\\.m\\.jd\\.com/api\\?functionId=vvipclub_distributeBean_assist",
+      "stage": "res",
+      "target": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_zjd.js",
+      "enable": true,
+      "note": "赚京豆Body"
+    },
+    {
+      "match": "https://api\\.m\\.jd\\.com/client\\.action.*functionId=drawShopGift",
+      "stage": "res",
+      "target": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_gzyl.js",
+      "enable": true,
+      "note": "关注有礼Body"
+    }
+    ,
+    {
+      "match": "https://lzkj\\-isv\\.isvjcloud\\.com/wxShopGift/draw",
+      "stage": "res",
+      "target": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_txgzyl.js",
+      "enable": true,
+      "note": "特效关注有礼店铺"
+    }
+  ],
+  "task": {
+    "type": "skip",
+    "list": [
+        {
+          "name": "赚京豆助力",
+          "type": "cron",
+          "time": "10 10 * * *",
+          "running": false,
+          "job": {
+            "type": "runjs",
+            "target": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/zxd.js"
+          }
+        },
+      {
+          "name": "PKC关注有礼",
+          "type": "cron",
+          "time": "10 20 * * *",
+          "running": false,
+          "job": {
+            "type": "runjs",
+            "target": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_gzyl.js"
+          }
+        },
+      {
+          "name": "PKC关注有礼-特效",
+          "type": "cron",
+          "time": "10 20 * * *",
+          "running": false,
+          "job": {
+            "type": "runjs",
+            "target": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_txgzyl.js"
+          }
+        }
+    ]
+  }
+}
