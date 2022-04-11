@@ -87,6 +87,9 @@ let isGetbody = typeof $request !== 'undefined';
 
        await getMyPing(sleeptime);
        await draw(sleeptime);
+       if($.index != cookiesArr.length){
+        await $.wait(parseInt(3, 10) * 1000)
+      }
     }
   }
 
