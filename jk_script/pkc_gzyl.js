@@ -161,14 +161,14 @@ async function drawShopGift(timeout = 500) {
                       if($.data.isSuccess && $.data.result.giftResult && $.data.result.followResult){
                           alreadyReceivedGifts = $.data.result.alreadyReceivedGifts
                           for (let l = 0; l < alreadyReceivedGifts.length; l++) {
-                              if($.countBean[username]){
-                                $.countBean[username] += alreadyReceivedGifts[l]['redWord']+alreadyReceivedGifts[l]['rearWord'] + " ";
+                              if($.countBean[`${$.nickName || $.UserName}`]){
+                                $.countBean[`${$.nickName || $.UserName}`] += alreadyReceivedGifts[l]['redWord']+alreadyReceivedGifts[l]['rearWord'] + " ";
                             }else {
-                                $.countBean[username] = alreadyReceivedGifts[l]['redWord']+alreadyReceivedGifts[l]['rearWord'];
+                                $.countBean[`${$.nickName || $.UserName}`] = alreadyReceivedGifts[l]['redWord']+alreadyReceivedGifts[l]['rearWord'];
                            }
                           }
-                          if($.countBean[username]){
-                              console.log(`${username} 成功关注获得 ${$.countBean[username]}`)
+                          if($.countBean[`${$.nickName || $.UserName}`]){
+                              console.log(`${`${$.nickName || $.UserName}`} 成功关注获得 ${$.countBean[`${$.nickName || $.UserName}`]}`)
                           }
 
 
@@ -190,11 +190,7 @@ function requireConfig() {
     notify = $.isNode() ? require('./sendNotify') : '';
     //Node.js用户请在jdCookie.js处填写京东ck;
     const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-    if(process.env.PKC_GZYL){
-        PKC_GZYLArrNode = $.isNode() ? process.env.PKC_GZYL.split('@') : [];
-    }else {
-        PKC_GZYLArrNode = [];
-    }
+    const PKC_GZYLArrNode = $.isNode() ? process.env.PKC_GZYL.split('@') : [];
     //IOS等用户直接用NobyDa的jd cookie
     if ($.isNode()) {
       Object.keys(jdCookieNode).forEach((item) => {

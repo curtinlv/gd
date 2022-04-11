@@ -15,11 +15,11 @@ boxjs订阅：https://git.metauniverse-cn.com/https://raw.githubusercontent.com/
 
 
 兼容圈x、v2p
-#【圈x】重写订阅地址: https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/cx.conf
-#【v2p】重写订阅地址: https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/cx_v2p.json
+#【圈x】重写订阅地址: https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/dy/cx.conf
+#【v2p】重写订阅地址: https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/dy/cx_v2p.json
 
 [rewrite_remote]
-https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/cx.conf, tag=订阅-Curtin, update-interval=172800, opt-parser=false, enabled=true
+https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/dy/cx.conf, tag=订阅-Curtin, update-interval=172800, opt-parser=false, enabled=true
 
 [task_local]
 #获取body后执行
@@ -88,7 +88,8 @@ let isGetbody = typeof $request !== 'undefined';
        await getMyPing(sleeptime);
        await draw(sleeptime);
        if($.index != cookiesArr.length){
-        await $.wait(parseInt(3, 10) * 1000)
+           // 每个账号间隔随机休眠几秒
+          await $.wait(parseInt(Math.random() * 5000 + 100, 10));
       }
     }
   }
@@ -362,7 +363,7 @@ async function getMyPing(timeout = 500) {
                 body: `userId=${userId}&token=${token}&fromType=APP_shopGift`
 
             };
-            username='';
+            username=nickname;
             pin='';
             // console.log(`getMyPing URL = ${JSON.stringify(url)}`);
             $.post(url, async (err, resp, data) => {
@@ -432,10 +433,10 @@ async function draw(timeout = 500) {
                               getlp = $.data.errorMessage
                           }
 
-                          if($.countBean[nickname]){
-                                $.countBean[nickname] += getlp;
+                          if($.countBean[username]){
+                                $.countBean[username] += getlp;
                             }else {
-                                $.countBean[nickname] = getlp;
+                                $.countBean[username] = getlp;
                            }
                      }
                      console.log("*****************************************")
@@ -553,11 +554,8 @@ function requireConfig() {
     notify = $.isNode() ? require('./sendNotify') : '';
     //Node.js用户请在jdCookie.js处填写京东ck;
     const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-    if(process.env.PKC_TXGZYL){
-        activityIdArrNode = $.isNode() ? process.env.PKC_TXGZYL.split('@') : [];
-    }else {
-        activityIdArrNode = [];
-    }
+    const activityIdArrNode = $.isNode() ? process.env.PKC_TXGZYL.split('@') : [];
+
     // IOS等用户直接用NobyDa的jd cookie
     if ($.isNode()) {
       Object.keys(jdCookieNode).forEach((item) => {
