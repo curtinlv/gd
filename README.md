@@ -20,7 +20,7 @@ docker exec -it qinglong /bin/bash
 - [x] 一键安装
 
 ```
-rm -f install.sh* && wget -q https://github.littlejerry.tk/https://raw.githubusercontent.com/curtinlv/gd/main/install.sh && bash install.sh
+rm -f install.sh* && wget -q https://github.littlejerry.tk/https://raw.githubusercontent.com/funyhook/qlBot/main/install.sh && bash install.sh
 ```
 
 
@@ -118,7 +118,7 @@ pm2 restart jbot
 rm -rf /ql/repo/gd && cd /ql/repo/ && git clone https://github.littlejerry.tk/https://github.com/curtinlv/gd.git && pm2 stop jbot ; rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ ; pm2 start jbot
 
 #或一键更新2
-if [ -d /ql/data ];then QL=/ql/data;else QL=/ql; fi;cd ${QL} && rm -f update.sh* && wget  -q https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && bash update.sh
+if [ -d /ql/data ];then QL=/ql/data;else QL=/ql; fi;cd ${QL} && rm -f update.sh* && wget  -q https://raw.githubusercontent.com/funyhook/qlBot/main/update.sh >/dev/null && bash update.sh
 
 ## 卸载机器人
 pm2 stop jbot && pm2 delete jbot
