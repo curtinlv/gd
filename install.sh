@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-daili='https://git.metauniverse-cn.com/'
+daili='https://github.littlejerry.tk'
 
 if [ -d /ql/data/config ];then
     QLMainPath='/ql/data'
