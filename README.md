@@ -23,7 +23,11 @@ docker exec -it qinglong /bin/bash
 rm -f install.sh* && wget -q https://github.littlejerry.tk/https://raw.githubusercontent.com/funyhook/qlBot/main/install.sh && bash install.sh
 ```
 
+- [x] 解决依赖安装下载速度慢的问题：
 
+```
+pip config set global.index-url https://mirrors.cloud.tencent.com/pypi/simple
+```
 
 ## 3.配置tg机器人参数
 
