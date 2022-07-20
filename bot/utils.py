@@ -8,8 +8,9 @@ from functools import wraps
 
 import requests
 from telethon import events, Button
+# from ..user.login import user
 
-from .. import jdbot, chat_id, LOG_DIR, logger, JD_DIR, DB_DIR, CONFIG_DIR, BOT_SET, DIY_DIR
+from .. import jdbot, chat_id, LOG_DIR, logger, JD_DIR, DB_DIR, CONFIG_DIR, BOT_SET, DIY_DIR, user
 
 row = int(BOT_SET["每页列数"])
 CRON_FILE = f"{CONFIG_DIR}/crontab.list"
@@ -133,7 +134,7 @@ async def cmd(cmdtext):
             await jdbot.edit_message(msg, "已执行，但返回值为空")
         elif len(res) <= 4000:
             await jdbot.delete_messages(chat_id, msg)
-            await jdbot.send_message(chat_id, res)
+            await user.send_message(chat_id, res)
         elif len(res) > 4000:
             tmp_log = f'{LOG_DIR}/bot/{cmdtext.split("/")[-1].split(".js")[0]}-{datetime.datetime.now().strftime("%H-%M-%S")}.log'
             with open(tmp_log, "w+", encoding="utf-8") as f:

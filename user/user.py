@@ -7,8 +7,8 @@ import re
 import sys
 import json
 from telethon import events
-from .login import user
-from .. import chat_id, jdbot, logger, TOKEN
+# from .login import user
+from .. import chat_id, jdbot, logger, TOKEN, user
 from ..bot.utils import cmd, V4
 from ..diy.utils import rwcon, myzdjr_chatIds, my_chat_id, jk
 jk_version = 'v1.2.9'
@@ -123,7 +123,7 @@ async def isduilie(kv):
     return lable
 
 @client.on(events.NewMessage(chats=bot_id, from_users=chat_id, pattern=r"^(user|在吗)(\?|\？)$"))
-async def user(event):
+async def users(event):
     try:
         msg = await jdbot.send_message(chat_id, f'靓仔你好，gd监控`{jk_version}`已正常启动！\n\n配置变量: `{len(jk_list)}` | 当前监控: `{envNum}`')
         dlmsg = await funCXDL()

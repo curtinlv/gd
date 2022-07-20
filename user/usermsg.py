@@ -1,7 +1,7 @@
 from telethon import events
 
-from .login import user
-
+# from .login import user
+from .. import user
 
 @user.on(events.NewMessage(pattern=r'^id$', outgoing=True))
 async def check_id(event):

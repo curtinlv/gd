@@ -1,7 +1,7 @@
 from telethon import events
 
-from .login import user
-
+# from .login import user
+from .. import user
 
 @user.on(events.NewMessage(pattern=r'^re?[ 0-9]*$', outgoing=True))
 async def mycp(event):

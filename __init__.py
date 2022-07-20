@@ -79,3 +79,18 @@ elif BOT.get("noretry") and BOT["noretry"]:
     jdbot = TelegramClient("bot", API_ID, API_HASH).start(bot_token=TOKEN)
 else:
     jdbot = TelegramClient("bot", API_ID, API_HASH, connection_retries=None).start(bot_token=TOKEN)
+
+# 开启tg对话
+if PROXY_START and BOT.get('noretry') and BOT['noretry']:
+    user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH, connection=connectionType, proxy=proxy)
+elif PROXY_START:
+    user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH, connection=connectionType, proxy=proxy,
+                          connection_retries=None)
+elif BOT.get('noretry') and BOT['noretry']:
+    user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH)
+else:
+    user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH, connection_retries=None)
+#解决/user重复对话, user?不回复问题
+if BOT_SET['开启user'].lower() == 'true':
+    logger.info("开启user监控")
+    user = user.start()

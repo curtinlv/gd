@@ -10,9 +10,9 @@ def load_module(module, path):
         try:
             if file.endswith('.py') or file.endswith('.pyc'):
                 filename = file.replace('.pyc', '').replace('.py', '')
-                if 'login.py' == file:
-                    logger.info(f"加载成功  {filename}")
-                    continue
+                # if 'login.py' == file:
+                #     logger.info(f"加载成功  {filename}")
+                #     continue
                 name = "jbot.{}.{}".format(module, filename)
                 spec = importlib.util.spec_from_file_location(name, path+file)
                 load = importlib.util.module_from_spec(spec)
