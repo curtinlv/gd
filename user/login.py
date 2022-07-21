@@ -1,10 +1,7 @@
 import asyncio
 import os
-from telethon import TelegramClient
 from telethon import events, Button
-
-from .. import API_HASH, API_ID, BOT, PROXY_START, PROXY_TYPE, connectionType, CONFIG_DIR
-from .. import chat_id, jdbot, BOT_SET, logger
+from .. import BOT,  PROXY_TYPE, chat_id, jdbot, user
 from ..bot.utils import press_event, V4, row, split_list
 
 # 兼容青龙新版目录
