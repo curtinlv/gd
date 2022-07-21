@@ -16,7 +16,7 @@ from ..bot.utils import cmd
 async def getNewVer():
     url = 'https://raw.githubusercontent.com/curtinlv/gd/main/bot/update.py'
     if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false' and 'github' in url:
-        url = f'https://git.metauniverse-cn.com/{url}'
+        url = f'https://ghproxy.com/{url}'
     newversion = None
     r = requests.get(url)
     if r.status_code == 200:
@@ -60,7 +60,7 @@ async def upgdjk(event):
             await jdbot.delete_messages(chat_id, msg)
         else:
             if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false':
-                await cmd('if [ -d /ql/data ];then QL=/ql/data;else QL=/ql; fi;cd ${QL} && rm -f update.sh* && wget  -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >${QL}/log/bot/up.log &')
+                await cmd('if [ -d /ql/data ];then QL=/ql/data;else QL=/ql; fi;cd ${QL} && rm -f update.sh* && wget  -q https://ghproxy.com/https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >${QL}/log/bot/up.log &')
             else:
                 await cmd('if [ -d /ql/data ];then QL=/ql/data;else QL=/ql; fi;cd ${QL} && rm -f update.sh* && wget  -q https://raw.githubusercontent.com/curtinlv/gd/main/update.sh >/dev/null && nohup bash update.sh 2>&1 >${QL}/log/bot/up.log &')
 

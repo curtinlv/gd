@@ -1,7 +1,8 @@
 from telethon import events
 
-from .login import user
-
+# from .login import user
+# from .login import user
+from .. import user
 
 @user.on(events.NewMessage(pattern=r'^dat$', outgoing=True))
 async def dat(context):

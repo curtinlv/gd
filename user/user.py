@@ -7,8 +7,8 @@ import re
 import sys
 import json
 from telethon import events
-from .login import user
-from .. import chat_id, jdbot, logger, TOKEN
+# from .login import user
+from .. import chat_id, jdbot, logger, TOKEN, user
 from ..bot.utils import cmd, V4
 from ..diy.utils import rwcon, myzdjr_chatIds, my_chat_id, jk
 jk_version = 'v1.2.9'
@@ -63,12 +63,14 @@ readDL(True)
 # 开启队列
 async def funCX(name, scriptPath, msg, group, lable=1):
     try:
+
         cxjc = f'ps -ef | egrep -v "tail|timeout|grep" | grep {os.path.basename(scriptPath)} | egrep "python|node"'
         result = os.popen(cxjc)
         r = result.readlines()
         if r:
             a = random.randint(60, 180) #队列检测休眠时间
             msg = await jdbot.edit_message(msg, f"【队列】{group} 的 `[{name}]` 变量当前已在跑，已加入队列等待。本次等待`{a}`秒后再次尝试。可发送【`监控明细`】查询队列情况。")
+            lable = int(lable)
             if lable < 21:
                 if lable == 1:
                     dl = readDL(False)
@@ -123,7 +125,7 @@ async def isduilie(kv):
     return lable
 
 @client.on(events.NewMessage(chats=bot_id, from_users=chat_id, pattern=r"^(user|在吗)(\?|\？)$"))
-async def user(event):
+async def users(event):
     try:
         msg = await jdbot.send_message(chat_id, f'靓仔你好，gd监控`{jk_version}`已正常启动！\n\n配置变量: `{len(jk_list)}` | 当前监控: `{envNum}`')
         dlmsg = await funCXDL()
