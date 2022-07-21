@@ -207,6 +207,9 @@ async def activityID(event):
                     msg = await jdbot.edit_message(msg, f"变量已在队列【{kv}】, 本次取消改动。")
                     continue
                 if isNow:
+                    # 进入队列检测前随机休眠，防止并行检测。
+                    a = random.randint(1, 10)
+                    await asyncio.sleep(a)
                     msg = await funCX(name, scriptPath, msg, group)
                     configs = rwcon("str")
                     if kv in configs:
