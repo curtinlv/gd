@@ -3,7 +3,7 @@
   "type": "rewrite",
   "note": "该订阅目前仅适用于 elecV2P。更多说明请查看: https://github.com/curtinlv/gd",
   "author": "Curtin",
-  "resource": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/dy/cx_v2p.json",
+  "resource": "https://raw.githubusercontent.com/curtinlv/gd/main/dy/cx_v2p.json",
   "mitmhost": [
     "api.m.jd.com", "lzkj-isv.isvjcloud.com"
   ],
@@ -11,14 +11,14 @@
     {
       "match": "^https?://api\\.m\\.jd\\.com/api\\?functionId=vvipclub_distributeBean_assist",
       "stage": "res",
-      "target": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_zjd.js",
+      "target": "https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_zjd.js",
       "enable": true,
       "note": "赚京豆Body"
     },
     {
       "match": "https://api\\.m\\.jd\\.com/client\\.action.*functionId=drawShopGift",
       "stage": "res",
-      "target": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_gzyl.js",
+      "target": "https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_gzyl.js",
       "enable": true,
       "note": "关注有礼Body"
     }
@@ -26,7 +26,7 @@
     {
       "match": "https://lzkj\\-isv\\.isvjcloud\\.com/wxShopGift/draw",
       "stage": "res",
-      "target": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_txgzyl.js",
+      "target": "https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_txgzyl.js",
       "enable": true,
       "note": "特效关注有礼店铺"
     }
@@ -41,7 +41,7 @@
           "running": false,
           "job": {
             "type": "runjs",
-            "target": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/zxd.js"
+            "target": "https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_zjd.js"
           }
         },
       {
@@ -51,7 +51,7 @@
           "running": false,
           "job": {
             "type": "runjs",
-            "target": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_gzyl.js"
+            "target": "https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_gzyl.js"
           }
         },
       {
@@ -61,7 +61,7 @@
           "running": false,
           "job": {
             "type": "runjs",
-            "target": "https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_txgzyl.js"
+            "target": "https://raw.githubusercontent.com/curtinlv/gd/main/jk_script/pkc_txgzyl.js"
           }
         }
     ]
