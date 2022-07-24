@@ -13,7 +13,7 @@ async def bot_help(event):
         text = 'mhelp'
     if V4:
         mhelp = '''
-pkc？-检测状态
+pkc-检测状态
 mx-查看监控明细
 a-自定义快捷按钮
 bean-获取收支
@@ -50,7 +50,7 @@ clean-清理缓存日志'''
         setshort = '/setshort 用于设置快捷方式，格式如下：\n更新-->jup\nAAA-->BBB这种格式使用/a选择\n/bean 1\n/edit /jd/config/config.sh\n以“/”开头的为机器人命令快捷，使用/b选择'
     else:
         mhelp = '''
-pkc？-检测状态
+pkc-检测状态
 mx-查看监控明细
 a-自定义快捷按钮
 bean-获取收支
