@@ -1,10 +1,8 @@
-from telethon import events, Button
-from .. import jdbot, chat_id, LOG_DIR, logger, BOT_SET, ch_name, user
+from telethon import events
+from .. import LOG_DIR,  user
 from ..bot.quickchart import QuickChart
 from ..bot.beandata import get_bean_data
-from ..bot.utils import V4,split_list, press_event
 from uuid import uuid4
-# from .login import user
 
 BEAN_IMG = f'{LOG_DIR}/bot/bean-{uuid4()}.jpg'
 

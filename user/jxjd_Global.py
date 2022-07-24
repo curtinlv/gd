@@ -1,8 +1,6 @@
 from telethon import events
-# from .login import user
-
-from .. import jdbot, user
-from ..diy.utils import read, write
+from .. import user
+from ..diy.utils import read
 import re
 import requests
 @user.on(events.NewMessage(pattern=r'^jx', outgoing=True))

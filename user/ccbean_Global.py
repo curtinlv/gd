@@ -1,8 +1,5 @@
-from telethon import events, Button
-# from .login import user
-
-from .. import jdbot, user
-from ..bot.utils import cmd, TASK_CMD,split_list, press_event
+from telethon import events
+from .. import user
 from ..diy.utils import read, write
 import asyncio
 import re
@@ -53,4 +50,4 @@ async def CCBeanInfo(event):
         await user.send_message(event.chat_id, strReturn)
     else:
         await event.delete()
-        await user.send_message(event.chat_id,'查询失败!')
+        await user.send_message(event.chat_id,'查询失败!\n请检查是否存在脚本：/ql/repo/ccwav_QLScript2/bot_jd_bean_change.js')

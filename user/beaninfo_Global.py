@@ -1,11 +1,8 @@
-from telethon import events, Button
-# from .login import user
-
-from .. import jdbot, user
-from ..bot.utils import cmd, TASK_CMD,split_list, press_event
+from telethon import events
+from .. import jdbot, user, chat_id, logger
 from ..diy.utils import read, write
 import asyncio
-import re
+import re, os
 
 @user.on(events.NewMessage(pattern=r'^setbd', outgoing=True))
 async def SetBeanDetailInfo(event):
@@ -44,7 +41,7 @@ async def SetBeanDetailInfo(event):
         function = "函数名：" + e.__traceback__.tb_frame.f_code.co_name
         details = "错误详情：第 " + str(e.__traceback__.tb_lineno) + " 行"
         tip = '建议百度/谷歌进行查询'
-        await jdbot.send_message(chat_id, f"{title}\n\n{name}\n{function}\n错误原因：{str(e)}\n{details}\n{traceback.format_exc()}\n{tip}")
+        await jdbot.send_message(chat_id, f"{title}\n\n{name}\n{function}\n错误原因：{str(e)}\n{details}\n{tip}")
         logger.error(f"错误--->{str(e)}")
         
 @user.on(events.NewMessage(pattern=r'^bd', outgoing=True))
@@ -96,7 +93,7 @@ async def CCBeanDetailInfo(event):
                     await user.send_message(event.chat_id, strReturn)
                     strReturn="" 
     else:
-        await user.send_message(event.chat_id,'查询失败!')
+        await user.send_message(event.chat_id,'查询失败!\n请检查是否存在脚本：/ql/repo/ccwav_QLScript2/bot_jd_bean_info_QL.js')
         
     if strReturn:        
         await user.send_message(event.chat_id, strReturn)

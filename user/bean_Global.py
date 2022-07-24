@@ -1,10 +1,10 @@
 from PIL import Image, ImageFont, ImageDraw
-from telethon import events, Button
-from .. import LOG_DIR, jdbot, chat_id, BOT_SET, BOT_DIR, logger,  ch_name, user
+from telethon import events
+from .. import LOG_DIR,BOT_DIR,user
 from prettytable import PrettyTable
 import subprocess
 from ..bot.beandata import get_bean_data
-from ..bot.utils import V4,split_list, press_event
+from ..bot.utils import V4
 from uuid import uuid4
 
 

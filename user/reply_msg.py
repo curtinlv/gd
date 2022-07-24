@@ -1,7 +1,6 @@
 from telethon import events
-
-# from .login import user
 from .. import user
+
 
 @user.on(events.NewMessage(pattern=r'^re?[ 0-9]*$', outgoing=True))
 async def mycp(event):
@@ -12,5 +11,5 @@ async def mycp(event):
         num = 1
     reply = await event.get_reply_message()
     await event.delete()
-    for _ in range(0, num):
+    for _ in range(1, num):
         await reply.forward_to(int(event.chat_id))
