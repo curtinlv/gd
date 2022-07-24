@@ -13,12 +13,15 @@ async def bot_get_file(event):
         if not event.message.file:
             return
         filename = event.message.file.name
-        if not (
-            filename.endswith(".py")
-            or filename.endswith(".pyc")
-            or filename.endswith(".js")
-            or filename.endswith(".sh")
-        ):
+        try:
+            if not (
+                filename.endswith(".py")
+                or filename.endswith(".pyc")
+                or filename.endswith(".js")
+                or filename.endswith(".sh")
+            ):
+                return
+        except:
             return
         SENDER = event.sender_id
         cmdtext = False
