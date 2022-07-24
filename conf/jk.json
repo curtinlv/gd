@@ -1,17 +1,17 @@
 {
-    "说明": "此配置支持自定义填写监控变量，频道id需要加在diybotset.json配置文件的myzdjr_chatId中，变量就填这里",
+    "说明": "此配置支持自定义填写监控变量，频道id需要加在diybotset.json配置文件的myzdjr_chatId中，变量就填这里。修改即生效，无需重启，注意备份！",
 
-    "/注释cmdName/": "cmdName: 执行命令，青龙默认task，一般不需要修改，修改需重启机器人生效。",
+    "/注释cmdName/": "cmdName: 执行命令，青龙默认task，一般不需要修改。",
 
-    "/注释isNow/": "isNow: 是否开启随机延时执行脚本，true=开启，false=关闭，修改需重启机器人生效。",
+    "/注释isNow/": "isNow: 是否开启随机延时执行脚本，true=开启，false=关闭。",
 
-    "/注释isOpen/": "isOpen: 是否开启监控该变量，true=开启，false=关闭，修改需重启机器人生效",
+    "/注释isOpen/": "isOpen: 是否开启监控该变量，true=开启，false=关闭",
   
-    "/注释name/": "name: 脚本名称备注或自定义名字，不重要。修改需重启机器人生效",
+    "/注释name/": "name: 脚本名称备注或自定义名字，不重要。",
   
-    "/注释envName/": "envName: 监控的变量名称，必要。如同一个脚本有多个变量只需要填其中一个即可，修改需重启机器人生效",
+    "/注释envName/": "envName: 监控的变量名称，必要。如同一个脚本有多个变量只需要填其中一个即可",
   
-    "/注释scriptPath/": "scriptPath: 变量应对的脚本路径，必要。相对路径默认执行/ql/scripts/下面脚本，可填绝对路径。修改需重启机器人生效",
+    "/注释scriptPath/": "scriptPath: 变量应对的脚本路径，必要。相对路径默认执行/ql/scripts/下面脚本，可填绝对路径。",
 
     "/注释log_send日志发送模式/": "1-bot发送；2-user发送；",
 
