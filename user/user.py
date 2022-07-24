@@ -327,7 +327,7 @@ async def activityID(event):
                 elif "zjdbody" in text:
                     lable = True
                     if str(event.chat.id) in str(my_chat_id):
-                        await cmd('task /ql/scripts/zxd.js now')
+                        await cmd(f'{cmdName} /ql/data/scripts/pkc_zjd.js now')
                     break
                 elif "jd_redrain_url" in text:
                     lable = True
