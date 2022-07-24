@@ -2,7 +2,7 @@ from telethon import TelegramClient, connection
 import json
 import os
 import logging
-
+from functools import wraps
 JD_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 CONFIG_DIR = f"{JD_DIR}/config"
@@ -20,6 +20,9 @@ BOT_JSON_FILE = f"{CONFIG_DIR}/bot.json"
 QR_IMG_FILE = f"{CONFIG_DIR}/qr.jpg"
 BOT_SET_JSON_FILE_USER = f"{CONFIG_DIR}/botset.json"
 BOT_SET_JSON_FILE = f"{BOT_DIR}/set.json"
+
+with open(f"{CONFIG_DIR}/jk.json", 'r', encoding='utf-8') as f:
+    jk = json.load(f)
 
 logging.basicConfig(
     format="%(asctime)s %(name)s %(levelname)s [%(funcName)s] %(message)s ", 
@@ -94,3 +97,16 @@ else:
 if BOT_SET['开启user'].lower() == 'true':
     logger.info("开启user监控")
     user = user.start()
+
+# 读取监控配置
+def readJKfile(func):
+    @wraps(func)
+    def getjkfile(*args, **kwargs):
+        try:
+            with open(f"{CONFIG_DIR}/jk.json", 'r', encoding='utf-8') as f:
+                jk = json.load(f)
+                return func(jk)
+                # return func(*args, **kwargs)
+        except:
+            return func(*args, **kwargs)
+    return getjkfile

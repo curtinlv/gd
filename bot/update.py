@@ -1,8 +1,8 @@
-version = 'v1.3.4'
+version = 'v1.3.5'
 botlog = """
-2022.7.22 (v1.3.4)
-    * 修复/user登录问题。（如无反应请修改botset.json中最后一个Ture改为False，再重启发送/user 开启user登录）
-    * 修复 RPCError 400: ENTITY_BOUNDS_INVALID (caused by SendMessageRequest) 报错
-    * 更换代理或关闭github下载代理
+2022.7.24 (v1.3.5)
+    * jk.json 支持在线修改，无需重启即生效
+    * 增加日志发送模式，jk.json配置需要增加参数[详情](https://raw.githubusercontent.com/curtinlv/gd/main/conf/jk.json)
+    * 修复队列问题
 [更多](https://github.com/curtinlv/gd/blob/main/updateLog.md)
 """

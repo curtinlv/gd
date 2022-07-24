@@ -7,11 +7,11 @@
 首次更新方式：
 1、以发送机器人命令方式：
 # 下载自定义监控配置文件 jk.json
-/cmd cd /ql/config && wget https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/conf/jk.json
+/cmd cd /ql/config && wget https://raw.githubusercontent.com/curtinlv/gd/main/conf/jk.json
 # 更新user.py
-/cmd cd /ql/jbot/user && rm -f user.py  && wget https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/user/user.py
+/cmd cd /ql/jbot/user && rm -f user.py  && wget https://raw.githubusercontent.com/curtinlv/gd/main/user/user.py
 # 更新 utils.py
-/cmd cd /ql/jbot/diy && rm -f utils.py  && wget https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/diy/utils.py
+/cmd cd /ql/jbot/diy && rm -f utils.py  && wget https://raw.githubusercontent.com/curtinlv/gd/main/diy/utils.py
 # 重启机器人生效
 /restart
 
@@ -46,14 +46,14 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
   pm2 stop jbot
   #更新代码
   rm -rf /ql/repo/gd
-  cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git
+  cd /ql/repo/ && git clone https://github.com/curtinlv/gd.git
   rm -rf /ql/jbot/*
   cp -a /ql/repo/gd/* /ql/jbot/
   #启动机器人
   pm2 start jbot
 
   #【更新方法2】发给机器人指令, 这是一行命令，整行复制，不能换行！
-  /cmd rm -rf /ql/repo/gd && cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git && pm2 stop jbot ; rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ ; pm2 start jbot
+  /cmd rm -rf /ql/repo/gd && cd /ql/repo/ && git clone https://github.com/curtinlv/gd.git && pm2 stop jbot ; rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ ; pm2 start jbot
 
   #适配青龙，以防重启后失效
   rm -rf /ql/repo/dockerbot
@@ -79,10 +79,10 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
   #【更新方法1】进入容器：
   docker exec -it qinglong /bin/bash
   # 直接复制执行，这是一条命令，不能换行。
-  rm -rf /ql/repo/gd && cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git && pm2 stop jbot ; rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ ; pm2 start jbot
+  rm -rf /ql/repo/gd && cd /ql/repo/ && git clone https://github.com/curtinlv/gd.git && pm2 stop jbot ; rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ ; pm2 start jbot
 
   #【更新方法2】发给机器人指令, 这是一行命令，整行复制，不能换行！
-  /cmd rm -rf /ql/repo/gd && cd /ql/repo/ && git clone https://git.metauniverse-cn.com/https://github.com/curtinlv/gd.git && pm2 stop jbot ; rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ ; pm2 start jbot
+  /cmd rm -rf /ql/repo/gd && cd /ql/repo/ && git clone https://github.com/curtinlv/gd.git && pm2 stop jbot ; rm -rf /ql/jbot/* && cp -a /ql/repo/gd/* /ql/jbot/ ; pm2 start jbot
 
   ```
 
@@ -111,7 +111,7 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
   /upgd
   
   或一键更新
-  cd /ql && rm -f update.sh* && wget -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/update.sh && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &
+  cd /ql && rm -f update.sh* && wget -q https://raw.githubusercontent.com/curtinlv/gd/main/update.sh && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &
   ```
 
 ```
@@ -134,7 +134,7 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
 
   - [x] 机器人更新指令：`/upgd`
 
-  - [x] 命令更新: `cd /ql && rm -f update.sh* && wget -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/update.sh && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &`
+  - [x] 命令更新: `cd /ql && rm -f update.sh* && wget -q https://raw.githubusercontent.com/curtinlv/gd/main/update.sh && nohup bash update.sh 2>&1 >/ql/log/bot/up.log &`
 
 * 2022.4.9 (v.1.2.7)
 
@@ -152,4 +152,11 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
   * v1.3.0
     * /user 重复对话问题
     * 彻底解决user？不回复问题
-
+	
+* 2022.7.22 (v.1.3.4)
+    * 修复 RPCError 400: ENTITY_BOUNDS_INVALID (caused by SendMessageRequest) 报错
+    * 更换代理或关闭github下载代理
+	
+* 2022.7.24 (v.1.3.5)
+    * 增加日志发送模式，jk.json配置需要增加参数
+	

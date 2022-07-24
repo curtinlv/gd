@@ -10,7 +10,7 @@ from telethon import events
 from .. import chat_id, jdbot, logger, ch_name, BOT_SET
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^cx$'))
+@jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^/cx$'))
 async def cxjc(event):
     try:
         msg=await jdbot.send_message(chat_id, "开始查询进程...")

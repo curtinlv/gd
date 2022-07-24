@@ -13,11 +13,19 @@
   
     "/注释scriptPath/": "scriptPath: 变量应对的脚本路径，必要。相对路径默认执行/ql/scripts/下面脚本，可填绝对路径。修改需重启机器人生效",
 
-   "cmdName": "task",
+    "/注释log_send日志发送模式/": "1-bot发送；2-user发送；",
 
-   "isNow": true,
+    "/注释log_type显示形式/": "1-默认（1000字符内文本形式，大于1000字符log文件）；2-仅发送log文件",
 
-   "jk":[
+    "cmdName": "task",
+
+    "isNow": true,
+
+    "log_send": "1",
+
+    "log_type": "1",
+
+  "jk":[
        {
            "isOpen": true,
            "name": "电脑配件",

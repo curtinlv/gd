@@ -10,12 +10,23 @@ import requests
 from telethon import events, Button
 # from ..user.login import user
 
-from .. import jdbot, chat_id, LOG_DIR, logger, JD_DIR, DB_DIR, CONFIG_DIR, BOT_SET, DIY_DIR, user, TOKEN
+from .. import jdbot, chat_id, LOG_DIR, logger, JD_DIR, DB_DIR, CONFIG_DIR, BOT_SET, DIY_DIR, user, TOKEN,OWN_DIR, jk, readJKfile
 bot_id = int(TOKEN.split(":")[0])
 row = int(BOT_SET["每页列数"])
 CRON_FILE = f"{CONFIG_DIR}/crontab.list"
 BEAN_LOG_DIR = f"{LOG_DIR}/jd_bean_change/"
 CONFIG_SH_FILE = f"{CONFIG_DIR}/config.sh"
+
+# 增加jk配置在线修改生效
+@readJKfile
+async def getGendMsgType(injk=jk):
+    try:
+        log_send = injk["log_send"]
+        log_type = injk["log_type"]
+    except Exception as e:
+        log_send = "1"
+        log_type = "1"
+    return log_send, log_type
 
 V4, QL, QL2, QL8, QL11 = False, False, False, False, False
 if os.environ.get("JD_DIR"):
@@ -116,10 +127,19 @@ def backup_file(file):
 def press_event(user_id):
     return events.CallbackQuery(func=lambda e: e.sender_id == user_id)
 
+def reContent_INVALID(text):
+    replaceArr = ['_', '*', '~']
+    for i in replaceArr:
+        t = ''
+        for a in range(5):
+            t += i
+        text = re.sub('\%s{6,}' % i, t, text)
+    return text
 
 async def cmd(cmdtext):
     """定义执行cmd命令"""
     try:
+        log_send, log_type = await getGendMsgType()
         msg = await jdbot.send_message(chat_id, "开始执行命令")
         p = await asyncio.create_subprocess_shell(
             cmdtext, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
@@ -132,16 +152,23 @@ async def cmd(cmdtext):
             return
         if len(res) == 0:
             await jdbot.edit_message(msg, "已执行，但返回值为空")
-        elif len(res) <= 4000:
+        elif len(res) <= 1000 and log_type == "1":
             await jdbot.delete_messages(chat_id, msg)
-            await user.send_message(bot_id, res)
-        elif len(res) > 4000:
+            if log_send == "2":
+                await user.send_message(bot_id, res)
+            else:
+                await jdbot.send_message(chat_id, reContent_INVALID(res))
+        elif len(res) > 1000 or log_type == "2":
             tmp_log = f'{LOG_DIR}/bot/{cmdtext.split("/")[-1].split(".js")[0]}-{datetime.datetime.now().strftime("%H-%M-%S")}.log'
             with open(tmp_log, "w+", encoding="utf-8") as f:
                 f.write(res)
             await jdbot.delete_messages(chat_id, msg)
-            await jdbot.send_message(chat_id, "执行结果较长，请查看日志", file=tmp_log)
+            if log_send == "2":
+                await user.send_message(bot_id, "执行结果较长，请查看日志", file=tmp_log)
+            else:
+                await jdbot.send_message(chat_id, "执行结果较长，请查看日志", file=tmp_log)
             os.remove(tmp_log)
+
     except Exception as e:
         await jdbot.send_message(chat_id, f"something wrong,I\"m sorry\n{str(e)}")
         logger.error(f"something wrong,I\"m sorry\n{str(e)}")

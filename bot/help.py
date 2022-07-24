@@ -13,6 +13,8 @@ async def bot_help(event):
         text = 'mhelp'
     if V4:
         mhelp = '''
+pkc？-检测状态
+mx-查看监控明细
 a-自定义快捷按钮
 bean-获取收支
 blockcookie-屏蔽账号
@@ -48,20 +50,22 @@ clean-清理缓存日志'''
         setshort = '/setshort 用于设置快捷方式，格式如下：\n更新-->jup\nAAA-->BBB这种格式使用/a选择\n/bean 1\n/edit /jd/config/config.sh\n以“/”开头的为机器人命令快捷，使用/b选择'
     else:
         mhelp = '''
+pkc？-检测状态
+mx-查看监控明细
 a-自定义快捷按钮
-addenv-青龙新增环境变量
 bean-获取收支
 blockcookie-屏蔽账号
 chart-统计收支变化
 check-测试user连接
 checkcookie-检测过期
 clearboard-删除快捷输入按钮
-cmd-执行shell命令
+cmd-执行cmd命令
 edit-编辑文件
-env-管理环境变量
+export-管理环境变量
 help-获取帮助
 getfile-获取jd目录下文件
 log-选择日志
+list-列出已拓展功能
 node-执行js脚本文件，绝对路径
 restart-重启本程序
 repo-仓库管理

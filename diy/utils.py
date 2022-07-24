@@ -13,8 +13,8 @@ from ..bot.utils import V4, QL, mycron, press_event, AUTH_FILE, cron_manage_QL, 
 
 with open(f"{CONFIG_DIR}/diybotset.json", 'r', encoding='utf-8') as f:
     diybotset = json.load(f)
-with open(f"{CONFIG_DIR}/jk.json", 'r', encoding='utf-8') as f:
-    jk = json.load(f)
+# with open(f"{CONFIG_DIR}/jk.json", 'r', encoding='utf-8') as f:
+#     jk = json.load(f)
 
 my_chat_id = int(diybotset['my_chat_id'])
 

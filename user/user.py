@@ -8,25 +8,23 @@ import sys
 import json
 from telethon import events
 # from .login import user
-from .. import chat_id, jdbot, logger, TOKEN, user
+from .. import chat_id, jdbot, logger, TOKEN, user, jk, CONFIG_DIR, readJKfile
 from ..bot.utils import cmd, V4
-from ..diy.utils import rwcon, myzdjr_chatIds, my_chat_id, jk
+from ..diy.utils import rwcon, myzdjr_chatIds, my_chat_id
 jk_version = 'v1.2.9'
 from ..bot.update import version as jk_version
 
+
 bot_id = int(TOKEN.split(":")[0])
 client = user
+######  初始化
 ## 新增配置自定义监控
-jk_list = jk["jk"]
-cmdName = jk["cmdName"]
+nameList, envNameList, scriptPathList = [], [], []
 jcDict = {}
 dlDict = {}
-try:
-    isNow = jk["isNow"]
-except Exception as e:
-    isNow = True
-
-nameList, envNameList, scriptPathList = [], [], []
+jk_list = jk["jk"]
+cmdName = jk["cmdName"]
+patternStr = ''
 for i in jk_list:
     if i["isOpen"]:
         nameList.append(i["name"])
@@ -34,19 +32,57 @@ for i in jk_list:
         scriptPathList.append(i["scriptPath"])
         dlDict[i["name"]] = 0
 dlDict["v"] = []
-patternStr = ''
 envNum = len(envNameList)
-for i in range(envNum):
-    if i == envNum-1:
-        patternStr += envNameList[i] + "|jd_redrain_url|jd_redrain_half_url|zjdbody"
-    else:
-        patternStr += envNameList[i] + "|"
-
+try:
+    isNow = jk["isNow"]
+except Exception as e:
+    isNow = True
 # 开启随机延时
 if isNow:
     yanshi = ''
 else:
     yanshi = 'now'
+
+# 增加jk配置在线修改生效
+@readJKfile
+async def getJkConfig(jk):
+    global cmdName, isNow, log_send, log_type, patternStr, nameList, envNameList, scriptPathList, dlDict, yanshi, envNum, jk_list, jcDict
+    """Do some math."""
+    jk_list = jk["jk"]
+    cmdName = jk["cmdName"]
+    dlDict = {}
+    jcDict = {}
+    patternStr = ''
+    try:
+        isNow = jk["isNow"]
+        log_send = jk["log_send"]
+        log_type = jk["log_type"]
+    except Exception as e:
+        isNow = True
+        log_send = "1"
+        log_type = "1"
+    nameList, envNameList, scriptPathList = [], [], []
+    for i in jk_list:
+        if i["isOpen"]:
+            nameList.append(i["name"])
+            envNameList.append(i["envName"])
+            scriptPathList.append(i["scriptPath"])
+            dlDict[i["name"]] = 0
+    if isNow:
+        yanshi = ''
+    else:
+        yanshi = 'now'
+    envNum = len(envNameList)
+    for i in range(envNum):
+        if i == envNum - 1:
+            patternStr += envNameList[i] + "|jd_redrain_url|jd_redrain_half_url|zjdbody"
+        else:
+            patternStr += envNameList[i] + "|"
+
+    # return jk, cmdName, isNow, patternStr, nameList, envNameList, scriptPathList, dlDict, yanshi
+    # readDL(True, dlDict)
+    return jk
+
 
 def readDL(lable, dl=dlDict):
     if lable:
@@ -70,15 +106,17 @@ async def funCX(name, scriptPath, msg, group, lable=1):
         if r:
             a = random.randint(60, 180) #队列检测休眠时间
             msg = await jdbot.edit_message(msg, f"【队列】{group} 的 `[{name}]` 变量当前已在跑，已加入队列等待。本次等待`{a}`秒后再次尝试。可发送【`监控明细`】查询队列情况。")
-            lable = int(lable)
             if lable < 21:
                 if lable == 1:
                     dl = readDL(False)
-                    dl[name] += 1
+                    try:
+                        dl[name] += 1
+                    except:
+                        dl[name] = 1
                     readDL(True, dl)
                 lable += 1
                 await asyncio.sleep(a)
-                return await funCX(name, scriptPath, msg, lable, group)
+                return await funCX(name, scriptPath, msg, group, lable)
         else:
             msg = await jdbot.edit_message(msg, f"【队列】`[{name}]`当前空闲，后台将随机延时执行。")
     except Exception as e:
@@ -87,27 +125,45 @@ async def funCX(name, scriptPath, msg, group, lable=1):
 
 # 查询当前已运行
 async def funCXDL():
+    await getJkConfig(jk)
     dl = readDL(False)
+    # logger.info(dl)
     for n, i in zip(nameList, scriptPathList):
-        cxjc = f'ps -ef | egrep -v "timeout|grep" | grep {i} | egrep "python|node"'
+        cxjc = f'ps -ef | egrep -v "tail|timeout|grep" | grep {os.path.basename(i)} | egrep "python|node"'
         result = os.popen(cxjc)
         r = result.readlines()
         jcDict[n] = len(r)
     dlmsg = ''
+    # logger.info(jcDict)
+    n = 1
     for i in jcDict:
         if jcDict[i] > 0:
             jcNum = f'`{jcDict[i]}`'
         else:
             jcNum = jcDict[i]
-        if dl[i] > 0:
-            dlNum = f'`{dl[i]}`'
-        else:
-            dlNum = dl[i]
-        dlmsg += f"当前:{jcNum} | 队列:{dlNum}\t【{i}】\n"
+        try:
+            if dl[i] > 0:
+                dlNum = f'`{dl[i]}`'
+            else:
+                dlNum = dl[i]
+        except:
+            dlNum = 0
+        dlmsg += f"当前:{jcNum} | 队列:{dlNum}\t [{n}]【{i}】\n"
+        n += 1
+    if log_send == "1":
+        log_send_msg = "bot发送"
+    else:
+        log_send_msg = "user发送"
+    if log_type == "1":
+        log_type_msg = "默认"
+    else:
+        log_type_msg = "log文件"
     if isNow:
-        dlmsg += f"\n是否队列等待:`已开启`\n"
+        dlmsg += f"\n是否队列等待: `已开启`\n"
     else:
         dlmsg += f"\n是否队列等待:`未开启`（如需开启，请配置jk.json的参数isNow=true）\n"
+    dlmsg += f"\n日志发送模式: `{log_send_msg}`\n\n日志显示形式: `{log_type_msg}`"
+
     return dlmsg
 
 # 增加再进入队列之前判断重复变量
@@ -124,15 +180,16 @@ async def isduilie(kv):
         readDL(True, dl)
     return lable
 
-@client.on(events.NewMessage(chats=bot_id, from_users=chat_id, pattern=r"^(user|在吗)(\?|\？)$"))
+@client.on(events.NewMessage(chats=bot_id, from_users=chat_id, pattern=r"^(/pkc|user|在吗)(\?|\？|)"))
 async def users(event):
     try:
-        msg = await jdbot.send_message(chat_id, f'靓仔你好，gd监控`{jk_version}`已正常启动！\n\n配置变量: `{len(jk_list)}` | 当前监控: `{envNum}`')
         dlmsg = await funCXDL()
+        msg = await jdbot.send_message(chat_id, f'靓仔你好，pkc监控`{jk_version}`已正常启动！\n\n配置变量: `{len(jk_list)}` | 当前监控: `{envNum}`')
         await asyncio.sleep(3)
         msg = await jdbot.edit_message(msg, f'\n================\n\t\t\t\t\t\t\t监控明细\n================\n{dlmsg}')
         await asyncio.sleep(30)
         await jdbot.delete_messages(chat_id, msg)
+        await client.delete_messages(chat_id, event.message)
     except Exception as e:
         title = "【💥错误💥】"
         name = "文件名：" + os.path.split(__file__)[-1].split(".")[0]
@@ -141,13 +198,15 @@ async def users(event):
         await jdbot.send_message(chat_id, f"{title}\n\n{name}\n{function}\n错误原因：{str(e)}\n\n{tip}")
         logger.error(f"错误--->{str(e)}")
 
-@client.on(events.NewMessage(chats=bot_id, from_users=chat_id, pattern=r"^监控明细$"))
+@client.on(events.NewMessage(chats=bot_id, from_users=chat_id, pattern=r"^(监控明细|/mx)$"))
 async def user_mx(event):
     try:
+        # await getJkConfig(jk)
         dlmsg = await funCXDL()
         msg = await jdbot.send_message(chat_id, f'\n================\n\t\t\t\t\t\t\t监控明细\n================\n{dlmsg}')
         await asyncio.sleep(30)
         await jdbot.delete_messages(chat_id, msg)
+        await client.delete_messages(chat_id, event.message)
     except Exception as e:
         title = "【💥错误💥】"
         name = "文件名：" + os.path.split(__file__)[-1].split(".")[0]
@@ -157,10 +216,17 @@ async def user_mx(event):
         logger.error(f"错误--->{str(e)}")
 
 pat = '(.|\\n)*export\s(%s).*=(".*"|\'.*\')' % patternStr
-@client.on(events.NewMessage(chats=myzdjr_chatIds, pattern=r'%s' % pat))
+# @client.on(events.NewMessage(chats=myzdjr_chatIds, pattern=r'%s' % pat))
+@client.on(events.NewMessage(chats=myzdjr_chatIds))
 async def activityID(event):
     try:
+        await getJkConfig(jk)
         text = event.message.text
+        msg_result = re.findall(patternStr, text)
+        if msg_result:
+            pass
+        else:
+            return None
         try:
             group = f'[{event.chat.title}](https://t.me/c/{event.chat.id}/{event.message.id})'
         except:
