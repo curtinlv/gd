@@ -2,7 +2,7 @@
 set -e
 
 #daili='https://git.metauniverse-cn.com/'
-daili='https://ghproxy.com/'
+daili=''
 
 if [ -d /ql/data/config ];then
     QLMainPath='/ql/data'

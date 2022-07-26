@@ -5,6 +5,16 @@ import logging
 from functools import wraps
 JD_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
+# 兼容青龙新版目录
+try:
+    qlver = os.environ['QL_BRANCH']
+    if qlver >= 'v2.12.0':
+        QLMain='/ql/data'
+    else:
+        QLMain = '/ql'
+except:
+    QLMain = '/ql'
+
 CONFIG_DIR = f"{JD_DIR}/config"
 SCRIPTS_DIR = f"{JD_DIR}/scripts"
 DIY_DIR = f"{JD_DIR}/own" if os.environ.get("JD_DIR") else f"{JD_DIR}/scripts"

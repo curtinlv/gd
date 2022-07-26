@@ -20,7 +20,7 @@ docker exec -it qinglong /bin/bash
 - [x] 一键安装
 
 ```
-rm -f install.sh* && wget -q https://git.metauniverse-cn.com/https://raw.githubusercontent.com/curtinlv/gd/main/install.sh && bash install.sh
+rm -f install.sh* && wget -q https://raw.githubusercontent.com/curtinlv/gd/main/install.sh && bash install.sh
 ```
 
 

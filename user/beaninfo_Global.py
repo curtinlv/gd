@@ -1,8 +1,10 @@
 from telethon import events
-from .. import jdbot, user, chat_id, logger
+from .. import jdbot, user, chat_id, logger, QLMain
 from ..diy.utils import read, write
 import asyncio
 import re, os
+
+
 
 @user.on(events.NewMessage(pattern=r'^setbd', outgoing=True))
 async def SetBeanDetailInfo(event):
@@ -75,7 +77,7 @@ async def CCBeanDetailInfo(event):
 
     await event.edit('开始查询账号'+text+'的资产，请稍后...')
         
-    cmdtext="task /ql/repo/ccwav_QLScript2/bot_jd_bean_info_QL.js now"        
+    cmdtext=f"task {QLMain}/repo/ccwav_QLScript2/bot_jd_bean_info_QL.js now"
     p = await asyncio.create_subprocess_shell(
         cmdtext, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
     res_bytes, res_err = await p.communicate()
@@ -91,10 +93,11 @@ async def CCBeanDetailInfo(event):
                 intcount=0
                 if strReturn:                    
                     await user.send_message(event.chat_id, strReturn)
-                    strReturn="" 
+                    strReturn=""
+
     else:
-        await user.send_message(event.chat_id,'查询失败!\n请检查是否存在脚本：/ql/repo/ccwav_QLScript2/bot_jd_bean_info_QL.js')
-        
+        await user.send_message(event.chat_id,f'查询失败!\n请检查是否存在脚本且能正常执行：\n{cmdtext}\n\n拉取脚本命令：\n/cmd ql repo https://github.com/ccwav/QLScript2.git "jd_" "NoUsed" "ql|sendNotify|utils|USER_AGENTS|jdCookie|JS_USER_AGENTS"', link_preview=False)
     if strReturn:        
         await user.send_message(event.chat_id, strReturn)
-    
+    else:
+        await user.send_message(event.chat_id,f'查询失败!\n请检查是否存在脚本且能正常执行：\n{cmdtext}\n\n拉取脚本命令：\n/cmd ql repo https://github.com/ccwav/QLScript2.git "jd_" "NoUsed" "ql|sendNotify|utils|USER_AGENTS|jdCookie|JS_USER_AGENTS"', link_preview=False)

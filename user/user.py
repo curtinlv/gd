@@ -223,10 +223,10 @@ async def activityID(event):
         await getJkConfig(jk)
         text = event.message.text
         msg_result = re.findall(patternStr, text)
-        if msg_result:
+        if len(msg_result) > 0:
             pass
         else:
-            return None
+            return
         try:
             group = f'[{event.chat.title}](https://t.me/c/{event.chat.id}/{event.message.id})'
         except:
@@ -239,7 +239,7 @@ async def activityID(event):
                 break
             elif "zjdbody" in text:
                 name = "赚喜豆-每天90豆"
-                scriptPath = '/ql/scripts/zxd.js'
+                scriptPath = '/ql/data/scripts/pkc_zjd.js'
                 break
             elif "jd_redrain_url" in text:
                 name = "整点京豆雨"
