@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 import asyncio
 import random
-import os
+import os, time
 import re
 import sys
 import json
 from telethon import events
 # from .login import user
-from .. import chat_id, jdbot, logger, TOKEN, user, jk, CONFIG_DIR, readJKfile
+from .. import chat_id, jdbot, logger, TOKEN, user, jk, CONFIG_DIR, readJKfile, LOG_DIR
 from ..bot.utils import cmd, V4
 from ..diy.utils import rwcon, myzdjr_chatIds, my_chat_id
 jk_version = 'v1.2.9'
@@ -22,9 +22,12 @@ client = user
 nameList, envNameList, scriptPathList = [], [], []
 jcDict = {}
 dlDict = {}
+todayEnv_tmp = {}
 jk_list = jk["jk"]
 cmdName = jk["cmdName"]
 patternStr = ''
+v_today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+jk_today_file = f'{LOG_DIR}/bot/jk-{v_today}.txt'
 for i in jk_list:
     if i["isOpen"]:
         nameList.append(i["name"])
@@ -46,12 +49,15 @@ else:
 # 增加jk配置在线修改生效
 @readJKfile
 async def getJkConfig(jk):
-    global cmdName, isNow, log_send, log_type, patternStr, nameList, envNameList, scriptPathList, dlDict, yanshi, envNum, jk_list, jcDict
+    global cmdName, isNow, log_send, log_type, patternStr, nameList, envNameList, scriptPathList, dlDict, yanshi, envNum, jk_list, jcDict, v_today, jk_today_file, todayEnv_tmp
+    v_today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    jk_today_file = f'{LOG_DIR}/bot/jk-{v_today}.txt'
     """Do some math."""
     jk_list = jk["jk"]
     cmdName = jk["cmdName"]
     dlDict = {}
     jcDict = {}
+    todayEnv_tmp = {}
     patternStr = ''
     try:
         isNow = jk["isNow"]
@@ -78,6 +84,13 @@ async def getJkConfig(jk):
             patternStr += envNameList[i] + "|jd_redrain_url|jd_redrain_half_url|zjdbody"
         else:
             patternStr += envNameList[i] + "|"
+    if os.path.exists(jk_today_file):
+        with open(jk_today_file, "r", encoding="utf-8") as f1:
+            todayEnv_tmp = json.load(f1)
+    # else:
+    #     with open(jk_today_file, "w+", encoding="utf-8") as f:
+    #         f.write('{}')
+
 
     # return jk, cmdName, isNow, patternStr, nameList, envNameList, scriptPathList, dlDict, yanshi
     # readDL(True, dlDict)
@@ -93,6 +106,40 @@ def readDL(lable, dl=dlDict):
             dl = json.load(f)
     return dl
 
+# 增加当天变量判断去重
+async def isjkEnvToDay(key, value):
+    isNewEnv = True
+    try:
+        if os.path.exists(jk_today_file):
+            with open(jk_today_file, "r", encoding="utf-8") as f1:
+                todayEnv = json.load(f1)
+            for k in todayEnv:
+                if k == key and k in envNameList:
+                    if value in todayEnv[k]:
+                        # logger.info(f"{value}")
+                        # logger.info(f"{todayEnv[k]}")
+                        isNewEnv = False
+                        break
+            if isNewEnv and key in envNameList:
+                with open(jk_today_file, "w+", encoding="utf-8") as f:
+                    if key in todayEnv.keys():
+                        todayEnv[key].append(value)
+                    else:
+                        todayEnv[key] = []
+                        todayEnv[key].append(value)
+                    json.dump(todayEnv, f, ensure_ascii=False)
+        else:
+            with open(jk_today_file, "w+", encoding="utf-8") as f:
+                if key in envNameList:
+                    todayEnv = {}
+                    todayEnv[key] = []
+                    todayEnv[key].append(value)
+                    json.dump(todayEnv, f, ensure_ascii=False)
+                else:
+                    f.write('{}')
+    except Exception as e:
+        logger.error(f"{e}")
+    return isNewEnv
 
 readDL(True)
 ########
@@ -133,10 +180,12 @@ async def funCXDL():
         result = os.popen(cxjc)
         r = result.readlines()
         jcDict[n] = len(r)
+
     dlmsg = ''
     # logger.info(jcDict)
     n = 1
-    for i in jcDict:
+    count_dtNum = 0
+    for i, e in zip(jcDict, envNameList):
         if jcDict[i] > 0:
             jcNum = f'`{jcDict[i]}`'
         else:
@@ -148,7 +197,12 @@ async def funCXDL():
                 dlNum = dl[i]
         except:
             dlNum = 0
-        dlmsg += f"当前:{jcNum} | 队列:{dlNum}\t [{n}]【{i}】\n"
+        if e in todayEnv_tmp.keys():
+            dtNum = len(todayEnv_tmp[e])
+        else:
+            dtNum = 0
+        count_dtNum += dtNum
+        dlmsg += f"当前:{jcNum} | 队列:{dlNum} | 今天:{dtNum}\t [{n}]【{i}】\n"
         n += 1
     if log_send == "1":
         log_send_msg = "bot发送"
@@ -163,7 +217,7 @@ async def funCXDL():
     else:
         dlmsg += f"\n是否队列等待:`未开启`（如需开启，请配置jk.json的参数isNow=true）\n"
     dlmsg += f"\n日志发送模式: `{log_send_msg}`\n\n日志显示形式: `{log_type_msg}`"
-
+    dlmsg += f"\n\n{v_today}: 监控`{count_dtNum}`次"
     return dlmsg
 
 # 增加再进入队列之前判断重复变量
@@ -215,7 +269,7 @@ async def user_mx(event):
         await jdbot.send_message(chat_id, f"{title}\n\n{name}\n{function}\n错误原因：{str(e)}\n\n{tip}")
         logger.error(f"错误--->{str(e)}")
 
-pat = '(.|\\n)*export\s(%s).*=(".*"|\'.*\')' % patternStr
+pat = '(.|\\n)*export\s(%s)=(".*"|\'.*\')' % patternStr
 # @client.on(events.NewMessage(chats=myzdjr_chatIds, pattern=r'%s' % pat))
 @client.on(events.NewMessage(chats=myzdjr_chatIds))
 async def activityID(event):
@@ -254,6 +308,7 @@ async def activityID(event):
         msg = await jdbot.send_message(chat_id, f'【监控】{group} 发出的 `[{name}]` 环境变量！', link_preview=False)
         messages = event.message.text.split("\n")
         change = ""
+        is_exec = ""
         for message in messages:
             if "export " not in message:
                 continue
@@ -271,11 +326,17 @@ async def activityID(event):
             kv = kv.replace('`', '').replace('*', '')
             key = key.replace('`', '').replace('*', '')
             value = value.replace('`', '').replace('*', '')
+            isNewEnv = await isjkEnvToDay(key, value)
+            if not isNewEnv:
+                is_exec = f"【重复】{group} 发出的 `[{name}]`当天变量已重复, 本次取消改动。"
+                continue
             if value in configs:
+                is_exec = f"【取消】{group} 发出的 `[{name}]` 配置文件已是该变量，无需改动！"
                 continue
             if key in configs:
                 if await isduilie(kv):
-                    msg = await jdbot.edit_message(msg, f"变量已在队列【{kv}】, 本次取消改动。")
+                    # msg = await jdbot.edit_message(msg, f"变量已在队列【{kv}】, 本次取消改动。")
+                    is_exec = f"【队列】{group} 发出的 `[{name}]` 变量已在队列，本次取消改动！"
                     continue
                 if isNow:
                     # 进入队列检测前随机休眠，防止并行检测。
@@ -308,7 +369,10 @@ async def activityID(event):
                 msg = await jdbot.edit_message(msg, change)
             rwcon(configs)
         if len(change) == 0:
-            await jdbot.edit_message(msg, f"【取消】{group} 发出的 `[{name}]` 变量无需改动！")
+            # await jdbot.edit_message(msg, f"【取消】{group} 发出的 `[{name}]` 变量无需改动！")
+            msg = await jdbot.edit_message(msg, is_exec)
+            await asyncio.sleep(5)
+            await jdbot.delete_messages(chat_id, msg)
             return
         try:
             lable = None

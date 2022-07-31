@@ -161,3 +161,8 @@ PS：后续只需修改 jk.json 配置文件，自己定义变量监控和应对
     * jk.json 支持在线修改，无需重启即生效
     * 增加日志发送模式，jk.json配置需要增加参数[详情](https://raw.githubusercontent.com/curtinlv/gd/main/conf/jk.json)
     * 修复队列问题
+* 2022.7.26 (v.1.3.6)
+    * 更新优化
+* 2022.7.31 (v.1.3.7)
+    * 增加当天变量去重
+    * 其他优化
