@@ -260,7 +260,12 @@ async def activityID(event):
             kvs = re.sub(r'.*export ', 'export ', message)
             kv = kvs.replace("export ", "")
             key = kv.split("=")[0]
-            value = re.findall(r'[\'|"]([^"]*)[\'|"]', kv)[0]
+            valuelist = re.findall(r'[\'|"]([^"]*)[\'|"]', kv)
+            # 一些变量没有双引号情况处理
+            if len(valuelist) == 0:
+                value = kv.split("=")[1]
+            else:
+                value = valuelist[0]
             configs = rwcon("str")
             # 去掉一些奇怪的符号。
             kv = kv.replace('`', '').replace('*', '')
