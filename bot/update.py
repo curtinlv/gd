@@ -1,7 +1,7 @@
-version = 'v1.3.7'
+version = 'v1.3.8'
 botlog = """
-2022.7.31 (v1.3.7)
+2022.8.1 (v1.3.8)
     * 增加当天变量去重
-    * 其他优化
+    * 更新优化
 [更多](https://github.com/curtinlv/gd/blob/main/updateLog.md)
 """

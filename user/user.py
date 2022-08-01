@@ -202,7 +202,7 @@ async def funCXDL():
         else:
             dtNum = 0
         count_dtNum += dtNum
-        dlmsg += f"当前:{jcNum} | 队列:{dlNum} | 今天:{dtNum}\t [{n}]【{i}】\n"
+        dlmsg += f"当前:{jcNum} | 队列:{dlNum} | 今天:{dtNum}\t【{n}.{i}】\n"
         n += 1
     if log_send == "1":
         log_send_msg = "bot发送"
@@ -211,7 +211,7 @@ async def funCXDL():
     if log_type == "1":
         log_type_msg = "默认"
     else:
-        log_type_msg = "log文件"
+        log_type_msg = "txt文件"
     if isNow:
         dlmsg += f"\n是否队列等待: `已开启`\n"
     else:
@@ -345,6 +345,7 @@ async def activityID(event):
                     msg = await funCX(name, scriptPath, msg, group)
                     configs = rwcon("str")
                     if kv in configs:
+                        is_exec = f"【取消】{group} 发出的 `[{name}]` 配置文件已是该变量，无需改动！"
                         continue
                 if 'VENDER_ID' in key:
                     # 监控开卡随机休眠
@@ -411,7 +412,7 @@ async def activityID(event):
                     await jdbot.delete_messages(chat_id, msg)
                     break
             if not lable:
-                await jdbot.edit_message(msg, f"看到这行字,是有严重BUG!")
+                await jdbot.send_message(chat_id, f"看到这行字,是有严重BUG!")
         except ImportError:
             pass
     except Exception as e:

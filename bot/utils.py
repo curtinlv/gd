@@ -159,7 +159,7 @@ async def cmd(cmdtext):
             else:
                 await jdbot.send_message(chat_id, reContent_INVALID(res))
         elif len(res) > 1000 or log_type == "2":
-            tmp_log = f'{LOG_DIR}/bot/{cmdtext.split("/")[-1].split(".js")[0]}-{datetime.datetime.now().strftime("%H-%M-%S")}.log'
+            tmp_log = f'{LOG_DIR}/bot/{cmdtext.split("/")[-1].split(".js")[0]}-{datetime.datetime.now().strftime("%H-%M-%S")}.txt'
             with open(tmp_log, "w+", encoding="utf-8") as f:
                 f.write(res)
             await jdbot.delete_messages(chat_id, msg)
