@@ -115,6 +115,10 @@ async def isjkEnvToDay(key, value):
                 todayEnv = json.load(f1)
             for k in todayEnv:
                 if k == key and k in envNameList:
+                    if "activityId" in value:
+                        # 增加去重activityId
+                        value = re.findall(r"(?<=activityId=).[0-9A-Za-z]{10,32}", value)[0]
+                        # logger.info(f"{value}  in {todayEnv[k]}")
                     if value in todayEnv[k]:
                         # logger.info(f"{value}")
                         # logger.info(f"{todayEnv[k]}")
