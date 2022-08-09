@@ -273,14 +273,15 @@ async def user_mx(event):
         await jdbot.send_message(chat_id, f"{title}\n\n{name}\n{function}\n错误原因：{str(e)}\n\n{tip}")
         logger.error(f"错误--->{str(e)}")
 
-pat = '(.|\\n)*export\s(%s)=(".*"|\'.*\')' % patternStr
+
 # @client.on(events.NewMessage(chats=myzdjr_chatIds, pattern=r'%s' % pat))
 @client.on(events.NewMessage(chats=myzdjr_chatIds))
 async def activityID(event):
     try:
         await getJkConfig(jk)
+        pat = '(.|\\n)*export\s(%s)=(".*"|\'.*\')' % patternStr
         text = event.message.text
-        msg_result = re.findall(patternStr, text)
+        msg_result = re.findall(pat, text)
         if len(msg_result) > 0:
             pass
         else:
