@@ -71,6 +71,9 @@ tail -100f /ql/data/log/bot/run.log
 
 ![图2：完成登录，tg机器人发通知](https://raw.githubusercontent.com/curtinlv/gd/main/img/p2.png)
 
+## 删除历史登录session
+rm -f /ql/config/user.session
+
 ## **登录user开启监控**
 
 - [x] a.发送【/user】 点击 **“重新登录”**
